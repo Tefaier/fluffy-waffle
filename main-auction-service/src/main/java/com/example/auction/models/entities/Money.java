@@ -35,6 +35,26 @@ public class Money implements Comparable<Money> {
     this.currency = currency;
   }
 
+  public void plus(Money money) {
+    double value1 = Money.getDoubleValue(this);
+    double value2 = Money.getDoubleValue(money.convertToCurrency(currency));
+    var parts = Double.toString(value1 + value2).split("\\.");
+    integerPart = Long.valueOf(parts[0]);
+    decimalPart = Long.valueOf(new StringBuilder(parts[1]).reverse().toString());
+  }
+
+  // can throw exception
+  public void minus(Money money) throws NegativeMoneyException {
+    double value1 = Money.getDoubleValue(this);
+    double value2 = Money.getDoubleValue(money.convertToCurrency(currency));
+    if (value1 < value2) {
+      throw new NegativeMoneyException("Tried to subtract to high value: " + value1 + " - " + value2);
+    }
+    var parts = Double.toString(value1 - value2).split("\\.");
+    integerPart = Long.valueOf(parts[0]);
+    decimalPart = Long.valueOf(new StringBuilder(parts[1]).reverse().toString());
+  }
+
   public Long getIntegerPart() {
     return integerPart;
   }
@@ -61,26 +81,6 @@ public class Money implements Comparable<Money> {
 
   public Money convertToCurrency(Currency to) {
     return new Money(integerPart, decimalPart, currency);
-  }
-
-  public void plus(Money money) {
-    double value1 = Money.getDoubleValue(this);
-    double value2 = Money.getDoubleValue(money.convertToCurrency(currency));
-    var parts = Double.toString(value1 + value2).split("\\.");
-    integerPart = Long.valueOf(parts[0]);
-    decimalPart = Long.valueOf(new StringBuilder(parts[1]).reverse().toString());
-  }
-
-  // can throw exception
-  public void minus(Money money) throws NegativeMoneyException {
-    double value1 = Money.getDoubleValue(this);
-    double value2 = Money.getDoubleValue(money.convertToCurrency(currency));
-    if (value1 < value2) {
-      throw new NegativeMoneyException("Tried to subtract to high value: " + value1 + " - " + value2);
-    }
-    var parts = Double.toString(value1 - value2).split("\\.");
-    integerPart = Long.valueOf(parts[0]);
-    decimalPart = Long.valueOf(new StringBuilder(parts[1]).reverse().toString());
   }
 
   private static double getDoubleValue(Money from) {
