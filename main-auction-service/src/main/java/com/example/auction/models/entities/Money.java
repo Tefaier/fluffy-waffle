@@ -13,10 +13,12 @@ import jakarta.validation.constraints.PositiveOrZero;
 public class Money implements Comparable<Money> {
   @Column
   @PositiveOrZero
+  @NotNull
   private Long integerPart;
 
   @Column(name = "value_decimal")
   @PositiveOrZero
+  @NotNull
   private Long decimalPart; // exactly reversed decimal part
 
   @Column

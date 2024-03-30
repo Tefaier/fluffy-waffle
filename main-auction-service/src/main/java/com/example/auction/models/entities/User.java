@@ -3,9 +3,16 @@ package com.example.auction.models.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.Fetch;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static jakarta.persistence.CascadeType.PERSIST;
+import static org.hibernate.annotations.FetchMode.SUBSELECT;
 
 @Entity
-@Table(name = "user")
+@Table(name = "account")
 public class User {
   @Column(updatable = false)
   @Id
@@ -37,10 +44,18 @@ public class User {
   @NotNull
   private Money money;
 
+  @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY, cascade = {PERSIST})
+  @Fetch(SUBSELECT)
+  private List<Lot> lots = new ArrayList<>();
+
+  @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY, cascade = {PERSIST})
+  @Fetch(SUBSELECT)
+  private List<Bet> bets = new ArrayList<>();
+
   protected User() {
   }
 
-  public User(Long id, String login, String firstName, String lastName, String passwordHash, String email, Money money) {
+  public User(Long id, String login, String firstName, String lastName, String passwordHash, String email, Money money, List<Lot> lots, List<Bet> bets) {
     this.id = id;
     this.login = login;
     this.firstName = firstName;
@@ -48,6 +63,8 @@ public class User {
     this.passwordHash = passwordHash;
     this.email = email;
     this.money = money;
+    this.lots = lots;
+    this.bets = bets;
   }
 
   public Long getId() {
@@ -104,5 +121,21 @@ public class User {
 
   public void setMoney(Money money) {
     this.money = money;
+  }
+
+  public List<Lot> getLots() {
+    return lots;
+  }
+
+  public void setLots(List<Lot> lots) {
+    this.lots = lots;
+  }
+
+  public List<Bet> getBets() {
+    return bets;
+  }
+
+  public void setBets(List<Bet> bets) {
+    this.bets = bets;
   }
 }

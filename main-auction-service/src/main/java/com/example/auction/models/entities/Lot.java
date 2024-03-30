@@ -4,9 +4,18 @@ import com.example.auction.models.enums.LotState;
 import io.hypersistence.utils.hibernate.type.array.StringArrayType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.descriptor.jdbc.TimestampWithTimeZoneJdbcType;
 
 import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static jakarta.persistence.CascadeType.PERSIST;
+import static org.hibernate.annotations.FetchMode.SUBSELECT;
 
 @Entity
 @Table(name = "lot")
@@ -23,8 +32,8 @@ public class Lot {
   @NotNull
   @Embedded
   @AttributeOverrides({
-      @AttributeOverride(name = "value", column = @Column(name = "initial_price_value")),
-      @AttributeOverride(name = "valueDecimal", column = @Column(name = "initial_price_value_decimal")),
+      @AttributeOverride(name = "integerPart", column = @Column(name = "initial_price_value")),
+      @AttributeOverride(name = "decimalPart", column = @Column(name = "initial_price_value_decimal")),
       @AttributeOverride(name = "currency", column = @Column(name = "initial_price_currency"))
   })
   private Money initialPrice;
@@ -32,19 +41,19 @@ public class Lot {
   @NotNull
   @Embedded
   @AttributeOverrides({
-      @AttributeOverride(name = "value", column = @Column(name = "minimum_price_value")),
-      @AttributeOverride(name = "valueDecimal", column = @Column(name = "minimum_price_value_decimal")),
+      @AttributeOverride(name = "integerPart", column = @Column(name = "minimum_price_value")),
+      @AttributeOverride(name = "decimalPart", column = @Column(name = "minimum_price_value_decimal")),
       @AttributeOverride(name = "currency", column = @Column(name = "minimum_price_currency"))
   })
   private Money minimumIncrease;
 
   @Column(name = "start_time")
   @NotNull
-  private Time startTime;
+  private Timestamp startTime;
 
   @Column(name = "finish_time")
   @NotNull
-  private Time finishTime;
+  private Timestamp finishTime;
 
   @Column
   @NotNull
@@ -60,10 +69,14 @@ public class Lot {
   @NotNull
   private LotState lotState;
 
+  @OneToMany(mappedBy = "lot", orphanRemoval = true, fetch = FetchType.LAZY, cascade = {PERSIST})
+  @Fetch(SUBSELECT)
+  private List<Bet> lotBets = new ArrayList<>();
+
   protected Lot() {
   }
 
-  public Lot(Long id, User user, Money initialPrice, Money minimumIncrease, Time startTime, Time finishTime, String description, @NotNull String[] images, LotState lotState) {
+  public Lot(Long id, User user, Money initialPrice, Money minimumIncrease, Timestamp startTime, Timestamp finishTime, String description, @NotNull String[] images, LotState lotState, List<Bet> lotBets) {
     this.id = id;
     this.user = user;
     this.initialPrice = initialPrice;
@@ -73,6 +86,7 @@ public class Lot {
     this.description = description;
     this.images = images;
     this.lotState = lotState;
+    this.lotBets = lotBets;
   }
 
   public Long getId() {
@@ -107,19 +121,19 @@ public class Lot {
     this.minimumIncrease = minimumIncrease;
   }
 
-  public Time getStartTime() {
+  public Timestamp getStartTime() {
     return startTime;
   }
 
-  public void setStartTime(Time startTime) {
+  public void setStartTime(Timestamp startTime) {
     this.startTime = startTime;
   }
 
-  public Time getFinishTime() {
+  public Timestamp getFinishTime() {
     return finishTime;
   }
 
-  public void setFinishTime(Time finishTime) {
+  public void setFinishTime(Timestamp finishTime) {
     this.finishTime = finishTime;
   }
 
@@ -145,5 +159,13 @@ public class Lot {
 
   public void setLotState(LotState lotState) {
     this.lotState = lotState;
+  }
+
+  public List<Bet> getLotBets() {
+    return lotBets;
+  }
+
+  public void setLotBets(List<Bet> lotBets) {
+    this.lotBets = lotBets;
   }
 }
