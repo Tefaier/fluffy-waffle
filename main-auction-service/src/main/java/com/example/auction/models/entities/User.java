@@ -1,6 +1,7 @@
 package com.example.auction.models.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.Fetch;
@@ -44,7 +45,7 @@ public class User {
   private String email;
 
   @Embedded
-  @NotNull
+  @Email
   private Money money;
 
   @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY, cascade = {PERSIST})
