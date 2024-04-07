@@ -23,7 +23,6 @@ public class Bet {
   private Lot lot;
 
   @Embedded
-  @NotNull
   private Money value;
 
   protected Bet() {
