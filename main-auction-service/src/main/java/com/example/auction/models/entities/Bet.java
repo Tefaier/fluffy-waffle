@@ -36,6 +36,12 @@ public class Bet {
     this.value = value;
   }
 
+  public Bet(User user, Lot lot, Money value) {
+    this.user = user;
+    this.lot = lot;
+    this.value = value;
+  }
+
   public Long getId() {
     return id;
   }
