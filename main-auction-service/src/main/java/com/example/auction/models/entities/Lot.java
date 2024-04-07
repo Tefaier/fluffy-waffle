@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.Type;
 import org.hibernate.proxy.HibernateProxy;
-import org.hibernate.type.descriptor.jdbc.TimestampWithTimeZoneJdbcType;
 
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -91,6 +90,17 @@ public class Lot {
     this.lotBets = lotBets;
   }
 
+  public Lot(User user, Money initialPrice, Money minimumIncrease, Timestamp startTime, Timestamp finishTime, String description, @NotNull String[] images) {
+    this.user = user;
+    this.initialPrice = initialPrice;
+    this.minimumIncrease = minimumIncrease;
+    this.startTime = startTime;
+    this.finishTime = finishTime;
+    this.description = description;
+    this.images = images;
+    this.lotState = LotState.NOT_SOLD;
+  }
+
   public Long getId() {
     return id;
   }
@@ -169,6 +179,9 @@ public class Lot {
 
   public void setLotBets(List<Bet> lotBets) {
     this.lotBets = lotBets;
+  }
+  public void addLotBet(Bet bet) {
+    lotBets.add(bet);
   }
 
   @Override

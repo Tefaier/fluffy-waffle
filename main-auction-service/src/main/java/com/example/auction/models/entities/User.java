@@ -7,6 +7,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -67,6 +68,15 @@ public class User {
     this.money = money;
     this.lots = lots;
     this.bets = bets;
+  }
+
+  public User(String login, String firstName, String lastName, String passwordHash, String email) {
+    this.login = login;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.passwordHash = passwordHash;
+    this.email = email;
+    this.money = new Money();
   }
 
   public Long getId() {
@@ -139,6 +149,14 @@ public class User {
 
   public void setBets(List<Bet> bets) {
     this.bets = bets;
+  }
+
+  public void addLot(Lot lot) {
+    lots.add(lot);
+  }
+
+  public void addBet(Bet bet) {
+    bets.add(bet);
   }
 
   @Override
