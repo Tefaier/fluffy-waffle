@@ -87,6 +87,7 @@ public class Money implements Comparable<Money> {
   }
 
   public Money convertToCurrency(Currency to) {
+    if (to == currency) return this;
     double value = Money.getDoubleValue(this);
     value *= conversionService.getCurrencyRatio(currency, to);
     var parts = Double.toString(value).split("\\.");

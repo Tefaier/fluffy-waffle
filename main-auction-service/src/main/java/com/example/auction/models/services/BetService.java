@@ -63,7 +63,7 @@ public class BetService {
             return false;
         }
         // violation of minimum increase rule
-        if (lot.getMinimumIncrease().compareTo(value.minus(currentTopBetValue)) > 0) {
+        if (lot.getMinimumIncrease().compareTo(currentTopBetValue == null ? value : value.minus(currentTopBetValue)) > 0) {
             return false;
         }
         // violation of minimum price rule
