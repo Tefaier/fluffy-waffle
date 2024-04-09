@@ -38,7 +38,7 @@ public class LotPurchaseOutboxService {
 
   public void pushRequestToKafka(LotPurchaseRequest request) throws JsonProcessingException {
     String message = objectMapper.writeValueAsString(request);
-    CompletableFuture<SendResult<String, String>> sendResult = kafkaTemplate.send(topicToSend, String.valueOf(request.usedId()), message);
+    CompletableFuture<SendResult<String, String>> sendResult = kafkaTemplate.send(topicToSend, String.valueOf(request.userId()), message);
     try {
       sendResult.get(5, TimeUnit.SECONDS);
     } catch (InterruptedException e) {
