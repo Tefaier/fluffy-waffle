@@ -19,6 +19,7 @@ import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 import java.util.UUID;
 
 @Service
@@ -67,7 +68,8 @@ public class LotService {
     }
 
     private boolean validateImage(String imageUrl) {
-        return true;
+        // may not work and be updated
+        return Pattern.matches("https?://.+\\.(jpg|png)", imageUrl);
     }
 
     @Transactional

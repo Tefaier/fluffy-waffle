@@ -2,15 +2,20 @@ package com.example.auction.models.entities;
 
 import com.example.auction.models.enums.Currency;
 import com.example.auction.models.exceptions.NegativeMoneyException;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import com.example.auction.models.services.CurrencyConversionService;
+import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Embeddable
 public class Money implements Comparable<Money> {
+  @Autowired
+  @Transient
+  private CurrencyConversionService conversionService;
+
   @Column
   @PositiveOrZero
   @NotNull
@@ -35,24 +40,26 @@ public class Money implements Comparable<Money> {
     this.currency = currency;
   }
 
-  public void plus(Money money) {
+  public Money plus(Money money) {
     double value1 = Money.getDoubleValue(this);
     double value2 = Money.getDoubleValue(money.convertToCurrency(currency));
     var parts = Double.toString(value1 + value2).split("\\.");
-    integerPart = Long.valueOf(parts[0]);
-    decimalPart = Long.valueOf(new StringBuilder(parts[1]).reverse().toString());
+    long newIntPart = Long.parseLong(parts[0]);
+    long newDecPart = Long.parseLong(new StringBuilder(parts[1]).reverse().toString());
+    return new Money(newIntPart, newDecPart, currency);
   }
 
   // can throw exception
-  public void minus(Money money) throws NegativeMoneyException {
+  public Money minus(Money money) throws NegativeMoneyException {
     double value1 = Money.getDoubleValue(this);
     double value2 = Money.getDoubleValue(money.convertToCurrency(currency));
     if (value1 < value2) {
       throw new NegativeMoneyException("Tried to subtract to high value: " + value1 + " - " + value2);
     }
     var parts = Double.toString(value1 - value2).split("\\.");
-    integerPart = Long.valueOf(parts[0]);
-    decimalPart = Long.valueOf(new StringBuilder(parts[1]).reverse().toString());
+    long newIntPart = Long.parseLong(parts[0]);
+    long newDecPart = Long.parseLong(new StringBuilder(parts[1]).reverse().toString());
+    return new Money(newIntPart, newDecPart, currency);
   }
 
   public Long getIntegerPart() {
@@ -80,7 +87,13 @@ public class Money implements Comparable<Money> {
   }
 
   public Money convertToCurrency(Currency to) {
-    return new Money(integerPart, decimalPart, currency);
+    if (to == currency) return this;
+    double value = Money.getDoubleValue(this);
+    value *= conversionService.getCurrencyRatio(currency, to);
+    var parts = Double.toString(value).split("\\.");
+    long newIntPart = Long.parseLong(parts[0]);
+    long newDecPart = Long.parseLong(new StringBuilder(parts[1]).reverse().toString());
+    return new Money(newIntPart, newDecPart, to);
   }
 
   private static double getDoubleValue(Money from) {

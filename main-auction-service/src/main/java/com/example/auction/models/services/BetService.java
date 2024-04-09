@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class BetService {
@@ -41,9 +42,10 @@ public class BetService {
     public long makeBet(long userId, long lotId, Money value) {
         User user = userService.getUser(userId);
         Lot lot = lotService.getLot(lotId);
-        entityManager.lock(user, LockModeType.PESSIMISTIC_WRITE);
+        //entityManager.lock(user, LockModeType.PESSIMISTIC_WRITE); // seems excessive
         entityManager.lock(lot, LockModeType.PESSIMISTIC_WRITE);
-        if (validateLot(user, lot, value)) {
+        Bet mostValueBet = getHighestValueBet(lot.getLotBets());
+        if (validateLot(user, lot, value, mostValueBet == null ? null : mostValueBet.getValue())) {
             Bet bet = new Bet(user, lot, value);
             user.addBet(bet);
             lot.addLotBet(bet);
@@ -55,16 +57,32 @@ public class BetService {
         }
     }
 
-    private boolean validateLot(User user, Lot lot, Money value) {
+    private boolean validateLot(User user, Lot lot, Money value, Money currentTopBetValue) {
+        // user can't afford this bet
         if (user.getMoney().compareTo(value) < 0) {
             return false;
         }
-        if (lot.getMinimumIncrease().compareTo(value) > 0) {
+        // violation of minimum increase rule
+        if (lot.getMinimumIncrease().compareTo(currentTopBetValue == null ? value : value.minus(currentTopBetValue)) > 0) {
             return false;
         }
+        // violation of minimum price rule
+        if (lot.getInitialPrice().compareTo(value) > 0) {
+            return false;
+        }
+        // lot already finished
         if (!(lot.getLotState() == LotState.NOT_SOLD && lot.getFinishTime().toInstant().isBefore(Instant.now()))) {
             return false;
         }
         return true;
+    }
+
+    private Bet getHighestValueBet(List<Bet> bets) {
+        if (bets.isEmpty()) return null;
+        Bet answer = bets.get(0);
+        for (int i = 1; i < bets.size(); i++) {
+            if (answer.getValue().compareTo(bets.get(i).getValue()) < 0) answer = bets.get(i);
+        }
+        return answer;
     }
 }

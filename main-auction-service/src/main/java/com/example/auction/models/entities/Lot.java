@@ -30,7 +30,6 @@ public class Lot {
   @ManyToOne(fetch = FetchType.LAZY)
   private User user;
 
-  @NotNull
   @Embedded
   @AttributeOverrides({
       @AttributeOverride(name = "integerPart", column = @Column(name = "initial_price_value")),
@@ -39,7 +38,6 @@ public class Lot {
   })
   private Money initialPrice;
 
-  @NotNull
   @Embedded
   @AttributeOverrides({
       @AttributeOverride(name = "integerPart", column = @Column(name = "minimum_price_value")),
@@ -49,25 +47,20 @@ public class Lot {
   private Money minimumIncrease;
 
   @Column(name = "start_time")
-  @NotNull
   private Timestamp startTime;
 
   @Column(name = "finish_time")
-  @NotNull
   private Timestamp finishTime;
 
   @Column
-  @NotNull
   private String description;
 
   @Column(columnDefinition = "text[]")
   @Type(StringArrayType.class)
-  @NotNull
   private String[] images;
 
   @Column(name = "state")
   @Enumerated(EnumType.STRING)
-  @NotNull
   private LotState lotState;
 
   @OneToMany(mappedBy = "lot", orphanRemoval = true, fetch = FetchType.LAZY, cascade = {PERSIST})
