@@ -42,7 +42,7 @@ public class BetService {
     public long makeBet(long userId, long lotId, Money value) {
         User user = userService.getUser(userId);
         Lot lot = lotService.getLot(lotId);
-        entityManager.lock(user, LockModeType.PESSIMISTIC_WRITE); // seems excessive
+        //entityManager.lock(user, LockModeType.PESSIMISTIC_WRITE); // seems excessive
         entityManager.lock(lot, LockModeType.PESSIMISTIC_WRITE);
         Bet mostValueBet = getHighestValueBet(lot.getLotBets());
         if (validateLot(user, lot, value, mostValueBet == null ? null : mostValueBet.getValue())) {
