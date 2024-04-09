@@ -8,6 +8,7 @@ import com.example.auction.models.enums.LotState;
 import com.example.auction.models.exceptions.LotCreateException;
 import com.example.auction.models.gateways.LotPurchaseOutboxService;
 import com.example.auction.models.repositories.LotRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gruelbox.transactionoutbox.TransactionOutbox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -26,14 +27,16 @@ import java.util.UUID;
 public class LotService {
     private final LotRepository lotRepository;
     private final UserService userService;
+    private final BetService betService;
     private final TransactionOutbox outbox;
 
     private final Duration LOT_FINISH_TIME_OFFSET = Duration.ofDays(7);
 
     @Autowired
-    public LotService(LotRepository lotRepository, UserService userService, TransactionOutbox outbox) {
+    public LotService(LotRepository lotRepository, UserService userService, BetService betService, TransactionOutbox outbox) {
         this.lotRepository = lotRepository;
         this.userService = userService;
+        this.betService = betService;
         this.outbox = outbox;
     }
 
@@ -74,12 +77,30 @@ public class LotService {
 
     @Transactional
     @Scheduled(fixedDelayString = "${finished-lots-check-delay}")
-    protected void processFinishedLots() {
+    protected void processFinishedLots() throws JsonProcessingException {
         var lotsToProcess = lotRepository.findByFinishTimeLessThanAndLotState(Timestamp.from(Instant.now()), LotState.NOT_SOLD);
         for (var lot : lotsToProcess) {
-            lot.setLotState(LotState.IN_PROGRESS);
-            lotRepository.save(lot);
-            outbox.with().ordered("justonetopic").schedule(LotPurchaseOutboxService.class).pushRequestToKafka(new LotPurchaseRequest(UUID.randomUUID().toString(), lot.getUser().getId(), ));
+            processFinishedLot(lot);
         }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    private void processFinishedLot(Lot lot) throws JsonProcessingException {
+        if (lot.getLotBets().isEmpty()) {
+            lot.setLotState(LotState.UNSOLD);
+        } else {
+            lot.setLotState(LotState.IN_PROGRESS);
+            outbox
+                .with()
+                .schedule(LotPurchaseOutboxService.class)
+                .pushRequestToKafka(new LotPurchaseRequest(
+                    UUID.randomUUID().toString(),
+                    lot.getUser().getId(),
+                    betService
+                        .getHighestValueBet(lot.getLotBets())
+                        .getValue())
+                );
+        }
+        lotRepository.save(lot);
     }
 }

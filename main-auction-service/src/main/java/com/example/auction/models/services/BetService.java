@@ -77,7 +77,7 @@ public class BetService {
         return true;
     }
 
-    private Bet getHighestValueBet(List<Bet> bets) {
+    public Bet getHighestValueBet(List<Bet> bets) {
         if (bets.isEmpty()) return null;
         Bet answer = bets.get(0);
         for (int i = 1; i < bets.size(); i++) {
