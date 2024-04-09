@@ -115,6 +115,11 @@
 			<version>1.19.3</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.gruelbox</groupId>
+			<artifactId>transactionoutbox-spring</artifactId>
+			<version>5.5.447</version>
+		</dependency>
 	</dependencies>
 
 	<build>
