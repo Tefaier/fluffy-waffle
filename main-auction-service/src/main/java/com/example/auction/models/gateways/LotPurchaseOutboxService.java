@@ -2,8 +2,12 @@ package com.example.auction.models.gateways;
 
 import com.example.auction.models.DTOs.LotPurchaseRequest;
 import com.example.auction.models.DTOs.LotPurchaseResponse;
+import com.example.auction.models.entities.Lot;
+import com.example.auction.models.enums.LotState;
+import com.example.auction.models.services.LotService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +18,7 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -26,14 +31,17 @@ public class LotPurchaseOutboxService {
   private final KafkaTemplate<String, String> kafkaTemplate;
   private final String topicToSend;
   private final ObjectMapper objectMapper;
+  private final LotService lotService;
 
   @Autowired
   public LotPurchaseOutboxService(KafkaTemplate<String, String> kafkaTemplate,
                                   @Value("${topic-lot-purchase-request}") String topicToSend,
-                                  ObjectMapper objectMapper) {
+                                  ObjectMapper objectMapper,
+                                  LotService lotService) {
     this.kafkaTemplate = kafkaTemplate;
     this.topicToSend = topicToSend;
     this.objectMapper = objectMapper;
+    this.lotService = lotService;
   }
 
   public void pushRequestToKafka(LotPurchaseRequest request) throws JsonProcessingException {
@@ -52,9 +60,16 @@ public class LotPurchaseOutboxService {
   }
 
   @KafkaListener(topics = {"${topic-lot-purchase-result}"})
+  @Transactional
   protected void consumePurchaseResponse(String message, Acknowledgment acknowledgment) throws JsonProcessingException {
     var parsedValue = objectMapper.readValue(message, LotPurchaseResponse.class);
     LOGGER.info("Consumed message from Kafka: " + message);
-    acknowledgment.acknowledge();
+    try {
+      var lot = lotService.getLot(parsedValue.userId());
+      lot.setLotState(parsedValue.isApproved() ? LotState.SOLD : LotState.REJECTED);
+      acknowledgment.acknowledge();
+    } catch (NoSuchElementException e) {
+      acknowledgment.acknowledge();
+    }
   }
 }
