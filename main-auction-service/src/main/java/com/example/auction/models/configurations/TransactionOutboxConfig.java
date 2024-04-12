@@ -1,6 +1,7 @@
 package com.example.auction.models.configurations;
 
 import com.example.auction.models.gateways.LotPurchaseOutboxService;
+import com.example.auction.models.gateways.OutboxControlService;
 import com.gruelbox.transactionoutbox.Dialect;
 import com.gruelbox.transactionoutbox.Persistor;
 import com.gruelbox.transactionoutbox.TransactionOutbox;
@@ -18,7 +19,7 @@ import java.time.Duration;
 @ComponentScan(value = "com.example.auction.models.gateways")
 public class TransactionOutboxConfig {
   @Autowired
-  private LotPurchaseOutboxService lotPurchaseOutboxService;
+  private OutboxControlService outboxControlService;
 
   @Bean
   public TransactionOutbox transactionOutbox(SpringTransactionManager springTransactionManager,
@@ -30,7 +31,7 @@ public class TransactionOutboxConfig {
         .persistor(Persistor.forDialect(Dialect.POSTGRESQL_9))
         .attemptFrequency(attemptFrequency)
         .blockAfterAttempts(5)
-        .listener(lotPurchaseOutboxService)
+        .listener(outboxControlService)
         .build();
   }
 }

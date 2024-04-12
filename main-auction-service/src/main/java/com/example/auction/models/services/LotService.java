@@ -93,9 +93,10 @@ public class LotService {
             outbox
                 .with()
                 .schedule(LotPurchaseOutboxService.class)
-                .pushRequestToKafka(new LotPurchaseRequest(
+                .pushPurchaseRequestToKafka(new LotPurchaseRequest(
                     UUID.randomUUID().toString(),
                     lot.getUser().getId(),
+                    lot.getId(),
                     betService
                         .getHighestValueBet(lot.getLotBets())
                         .getValue())

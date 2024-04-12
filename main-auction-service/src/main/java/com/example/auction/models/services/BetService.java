@@ -58,10 +58,6 @@ public class BetService {
     }
 
     private boolean validateLot(User user, Lot lot, Money value, Money currentTopBetValue) {
-        // user can't afford this bet
-        if (user.getMoney().compareTo(value) < 0) {
-            return false;
-        }
         // violation of minimum increase rule
         if (lot.getMinimumIncrease().compareTo(currentTopBetValue == null ? value : value.minus(currentTopBetValue)) > 0) {
             return false;
