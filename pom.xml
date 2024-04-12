@@ -10,7 +10,7 @@
 
 	<modules>
 		<module>main-auction-service</module>
-		<module>payment-process-service</module>
+		<module>purchase-service</module>
 	</modules>
 
 
