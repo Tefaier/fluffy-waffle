@@ -1,8 +1,8 @@
 package com.example.auction.models.services;
 
-import com.example.auction.models.entities.Lot;
 import com.example.auction.models.entities.Money;
 import com.example.auction.models.entities.User;
+import com.example.auction.models.exceptions.NegativeMoneyException;
 import com.example.auction.models.repositories.UserRepository;
 import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.persistence.EntityManager;
@@ -31,9 +31,14 @@ public class UserService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
+    public User getUser(UUID mainServiceId) {
+        return userRepository.findByMainServiceId(mainServiceId).orElseThrow();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
     @Retry(name = "user-generation")
-    public UUID createUser(String login, String firstName, String lastName, String passwordHash, String email) {
-        User user = new User(login, firstName, lastName, passwordHash, email);
+    public Long createUser(UUID mainServiceId) {
+        User user = new User(mainServiceId);
         userRepository.save(user);
         return user.getId();
     }
@@ -42,5 +47,21 @@ public class UserService {
     public void deleteUser(Long userId) {
         User user = userRepository.findById(userId).orElseThrow();
         userRepository.delete(user);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void addMoney(Long userId, Money money) {
+        User user = userRepository.findById(userId).orElseThrow();
+        entityManager.lock(user, LockModeType.PESSIMISTIC_WRITE);
+        user.setMoney(user.getMoney().plus(money));
+        userRepository.save(user);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void subtractMoney(Long userId, Money money) {
+        User user = userRepository.findById(userId).orElseThrow();
+        entityManager.lock(user, LockModeType.PESSIMISTIC_WRITE);
+        user.setMoney(user.getMoney().minus(money));
+        userRepository.save(user);
     }
 }

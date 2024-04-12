@@ -7,10 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static jakarta.persistence.CascadeType.PERSIST;
 import static org.hibernate.annotations.FetchMode.SUBSELECT;
@@ -20,8 +17,7 @@ import static org.hibernate.annotations.FetchMode.SUBSELECT;
 public class User {
   @Column(updatable = false)
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private UUID id;
 
   @Column
   @NotEmpty
@@ -44,10 +40,6 @@ public class User {
   @NotEmpty
   private String email;
 
-  @Embedded
-  @Email
-  private Money money;
-
   @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY, cascade = {PERSIST})
   @Fetch(SUBSELECT)
   private List<Lot> lots = new ArrayList<>();
@@ -59,32 +51,31 @@ public class User {
   protected User() {
   }
 
-  public User(Long id, String login, String firstName, String lastName, String passwordHash, String email, Money money, List<Lot> lots, List<Bet> bets) {
+  public User(UUID id, String login, String firstName, String lastName, String passwordHash, String email, List<Lot> lots, List<Bet> bets) {
     this.id = id;
     this.login = login;
     this.firstName = firstName;
     this.lastName = lastName;
     this.passwordHash = passwordHash;
     this.email = email;
-    this.money = money;
     this.lots = lots;
     this.bets = bets;
   }
 
   public User(String login, String firstName, String lastName, String passwordHash, String email) {
+    this.id = UUID.randomUUID();
     this.login = login;
     this.firstName = firstName;
     this.lastName = lastName;
     this.passwordHash = passwordHash;
     this.email = email;
-    this.money = new Money();
   }
 
-  public Long getId() {
+  public UUID getId() {
     return id;
   }
 
-  protected void setId(Long id) {
+  protected void setId(UUID id) {
     this.id = id;
   }
 
@@ -126,14 +117,6 @@ public class User {
 
   public void setEmail(String email) {
     this.email = email;
-  }
-
-  public Money getMoney() {
-    return money;
-  }
-
-  public void setMoney(Money money) {
-    this.money = money;
   }
 
   public List<Lot> getLots() {
