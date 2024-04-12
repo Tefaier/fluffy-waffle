@@ -26,7 +26,7 @@ public class UserService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public User getUser(Long userId) {
+    public User getUser(UUID userId) {
         return userRepository.findById(userId).orElseThrow();
     }
 

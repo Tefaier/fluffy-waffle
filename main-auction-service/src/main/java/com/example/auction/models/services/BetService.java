@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class BetService {
@@ -39,7 +40,7 @@ public class BetService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public long makeBet(long userId, long lotId, Money value) {
+    public long makeBet(UUID userId, long lotId, Money value) {
         User user = userService.getUser(userId);
         Lot lot = lotService.getLot(lotId);
         //entityManager.lock(user, LockModeType.PESSIMISTIC_WRITE); // seems excessive
