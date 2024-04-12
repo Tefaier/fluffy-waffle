@@ -1,13 +1,10 @@
 CREATE TABLE account (
-   id BIGSERIAL,
+   id UUID,
    login TEXT NOT NULL UNIQUE,
    firstname TEXT NOT NULL,
    lastname TEXT NOT NULL,
    password_hash TEXT NOT NULL,
    email TEXT NOT NULL UNIQUE,
-   integer_part BIGINT NOT NULL CHECK(integer_part >= 0),
-   value_decimal BIGINT NOT NULL CHECK(integer_part >= 0),
-   currency TEXT NOT NULL,
    CONSTRAINT pk_user PRIMARY KEY (id)
 );
 
