@@ -1,7 +1,6 @@
 package com.example.auction.models.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;

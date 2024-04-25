@@ -5,6 +5,7 @@ CREATE TABLE account (
    lastname TEXT NOT NULL,
    password_hash TEXT NOT NULL,
    email TEXT NOT NULL UNIQUE,
+   roles JSONB NOT NULL,
    CONSTRAINT pk_user PRIMARY KEY (id)
 );
 

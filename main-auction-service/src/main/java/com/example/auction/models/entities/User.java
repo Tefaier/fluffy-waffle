@@ -1,11 +1,12 @@
 package com.example.auction.models.entities;
 
+import com.example.auction.models.enums.Role;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.proxy.HibernateProxy;
+import org.hibernate.type.SqlTypes;
 
 import java.util.*;
 
@@ -37,6 +38,10 @@ public class User {
   private String passwordHash;
 
   @Column
+  @JdbcTypeCode(SqlTypes.JSON)
+  private Set<Role> roles;
+
+  @Column
   @NotEmpty
   private String email;
 
@@ -51,23 +56,25 @@ public class User {
   protected User() {
   }
 
-  public User(UUID id, String login, String firstName, String lastName, String passwordHash, String email, List<Lot> lots, List<Bet> bets) {
+  public User(UUID id, String login, String firstName, String lastName, String passwordHash, Set<Role> roles, String email, List<Lot> lots, List<Bet> bets) {
     this.id = id;
     this.login = login;
     this.firstName = firstName;
     this.lastName = lastName;
     this.passwordHash = passwordHash;
+    this.roles = roles;
     this.email = email;
     this.lots = lots;
     this.bets = bets;
   }
 
-  public User(String login, String firstName, String lastName, String passwordHash, String email) {
+  public User(String login, String firstName, String lastName, String passwordHash, Set<Role> roles, String email) {
     this.id = UUID.randomUUID();
     this.login = login;
     this.firstName = firstName;
     this.lastName = lastName;
     this.passwordHash = passwordHash;
+    this.roles = roles;
     this.email = email;
   }
 
@@ -141,6 +148,14 @@ public class User {
 
   public void addBet(Bet bet) {
     bets.add(bet);
+  }
+
+  public Set<Role> getRoles() {
+    return roles;
+  }
+
+  public void setRoles(Set<Role> roles) {
+    this.roles = roles;
   }
 
   @Override
