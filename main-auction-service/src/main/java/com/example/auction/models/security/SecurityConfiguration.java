@@ -25,11 +25,9 @@ public class SecurityConfiguration {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     return http
-        .sessionManagement(session -> session.sessionCreationPolicy(NEVER))
         .authorizeHttpRequests(auth ->
             auth.requestMatchers("/login**").permitAll()
                 .anyRequest().authenticated())
-        .httpBasic(Customizer.withDefaults())
         .cors(AbstractHttpConfigurer::disable)
         .csrf(AbstractHttpConfigurer::disable)
         .formLogin(login ->
