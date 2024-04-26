@@ -27,19 +27,21 @@ public class SecurityConfiguration {
     return http
         .sessionManagement(session -> session.sessionCreationPolicy(NEVER))
         .authorizeHttpRequests(auth ->
-            auth.requestMatchers("/login*").permitAll()
+            auth.requestMatchers("/login**").permitAll()
                 .anyRequest().authenticated())
         .httpBasic(Customizer.withDefaults())
         .cors(AbstractHttpConfigurer::disable)
         .csrf(AbstractHttpConfigurer::disable)
         .formLogin(login ->
             login
-                .loginPage("/login.html")
-                .loginProcessingUrl("/perform_login")
+                .loginPage("/login").permitAll()
+                .loginProcessingUrl("/login/perform_login").permitAll()
+                .failureUrl("login?error=true")
                 .defaultSuccessUrl("/"))
         .logout(logout ->
             logout
                 .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout=true")
                 .clearAuthentication(true))
         .build();
   }

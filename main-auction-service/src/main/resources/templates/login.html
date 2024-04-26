@@ -1,21 +1,19 @@
 <html>
-<head></head>
-<body>
-<h1>Login</h1>
-<form name='f' action="perform_login" method='POST'>
-    <table>
-        <tr>
-            <td>User:</td>
-            <td><input type='text' name='username' value=''></td>
-        </tr>
-        <tr>
-            <td>Password:</td>
-            <td><input type='password' name='password' /></td>
-        </tr>
-        <tr>
-            <td><input name="submit" type="submit" value="submit" /></td>
-        </tr>
-    </table>
-</form>
-</body>
+    <head>
+        <title>Please Log In</title>
+    </head>
+    <body>
+        <h1>Please Log In</h1>
+            <div th:if="${param.error}">Invalid username and password.</div>
+            <div th:if="${param.logout}">You have been logged out.</div>
+            <form th:action="@{/perform_login}" method="post">
+                <div>
+                    <input type="text" name="username" placeholder="Username"/>
+                </div>
+                <div>
+                    <input type="password" name="password" placeholder="Password"/>
+                </div>
+                <input type="submit" value="Log in" />
+            </form>
+    </body>
 </html>
