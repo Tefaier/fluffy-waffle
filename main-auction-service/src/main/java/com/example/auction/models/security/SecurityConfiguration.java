@@ -25,22 +25,22 @@ public class SecurityConfiguration {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     return http
-        .authorizeHttpRequests(auth ->
-            auth.requestMatchers("/login**").permitAll()
-                .anyRequest().authenticated())
-        .cors(AbstractHttpConfigurer::disable)
-        .csrf(AbstractHttpConfigurer::disable)
-        .formLogin(login ->
-            login
-                .loginPage("/login").permitAll()
-                .loginProcessingUrl("/login/perform_login").permitAll()
-                .failureUrl("login?error=true")
-                .defaultSuccessUrl("/"))
-        .logout(logout ->
-            logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout=true")
-                .clearAuthentication(true))
-        .build();
+            .authorizeHttpRequests(auth ->
+                    auth.requestMatchers("/login**", "/v3/api-docs**", "/api/bet/make**").permitAll()
+                            .anyRequest().authenticated())
+            .cors(AbstractHttpConfigurer::disable)
+            .csrf(AbstractHttpConfigurer::disable)
+            .formLogin(login ->
+                    login
+                            .loginPage("/login").permitAll()
+                            .loginProcessingUrl("/login/perform_login").permitAll()
+                            .failureUrl("/login?error=true")
+                            .defaultSuccessUrl("/"))
+            .logout(logout ->
+                    logout
+                            .logoutUrl("/logout")
+                            .logoutSuccessUrl("/login?logout=true")
+                            .clearAuthentication(true))
+            .build();
   }
 }
