@@ -34,7 +34,7 @@ public class SecurityConfiguration {
             login
                 .loginPage("/login").permitAll()
                 .loginProcessingUrl("/login/perform_login").permitAll()
-                .failureUrl("login?error=true")
+                .failureUrl("/login?error=true")
                 .defaultSuccessUrl("/"))
         .logout(logout ->
             logout

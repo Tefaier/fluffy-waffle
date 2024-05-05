@@ -54,7 +54,7 @@ public class Lot {
   private String description;
 
   @Column(columnDefinition = "text[]")
-  @Type(StringArrayType.class)
+  //@Type(StringArrayType.class)
   private String[] images;
 
   @Column(name = "state")

@@ -12,7 +12,7 @@ CREATE TABLE account (
 
 CREATE TABLE lot (
    id BIGSERIAL,
-   lot_dealer BIGINT NOT NULL,
+   lot_dealer UUID NOT NULL,
    start_time TIMESTAMP WITH TIME ZONE NOT NULL,
    finish_time TIMESTAMP WITH TIME ZONE NOT NULL,
    description TEXT NOT NULL,
@@ -32,7 +32,7 @@ ALTER TABLE lot ADD CONSTRAINT FK_LOT_ON_LOT_DEALER FOREIGN KEY (lot_dealer) REF
 
 CREATE TABLE bet (
    id BIGSERIAL,
-   bet_maker BIGINT NOT NULL,
+   bet_maker UUID NOT NULL,
    bet_lot BIGINT NOT NULL,
    integer_part BIGINT NOT NULL CHECK(integer_part >= 0),
    value_decimal BIGINT NOT NULL CHECK(integer_part >= 0),
