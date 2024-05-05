@@ -73,7 +73,7 @@ public class LotService {
 
     private boolean validateImage(String imageUrl) {
         // may not work and be updated
-        return Pattern.matches("https?://.+\\.(jpg|png)", imageUrl);
+        return Pattern.matches("https?://.+\\.(jpg|png|webm)", imageUrl);
     }
 
     @Transactional
