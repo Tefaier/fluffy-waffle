@@ -3,19 +3,18 @@ package com.example.auction.models.entities;
 import com.example.auction.models.enums.Currency;
 import com.example.auction.models.exceptions.NegativeMoneyException;
 import com.example.auction.models.services.CurrencyConversionService;
+import com.example.auction.models.services.UserService;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.number.money.CurrencyUnitFormatter;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 @Embeddable
 public class Money implements Comparable<Money> {
-  @Autowired
-  @Transient
-  private CurrencyConversionService conversionService;
-
   @Column
   @PositiveOrZero
   @NotNull
@@ -89,7 +88,7 @@ public class Money implements Comparable<Money> {
   public Money convertToCurrency(Currency to) {
     if (to == currency) return this;
     double value = Money.getDoubleValue(this);
-    value *= conversionService.getCurrencyRatio(currency, to);
+    value *= CurrencyConversionService.getCurrencyRatio(currency, to);
     var parts = Double.toString(value).split("\\.");
     long newIntPart = Long.parseLong(parts[0]);
     long newDecPart = Long.parseLong(new StringBuilder(parts[1]).reverse().toString());

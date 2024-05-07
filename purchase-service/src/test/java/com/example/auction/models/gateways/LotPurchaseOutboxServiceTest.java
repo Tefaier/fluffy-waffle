@@ -46,13 +46,15 @@ import java.util.UUID;
         "spring.kafka.consumer.auto-offset-reset=earliest"
     }
 )
-@Import({KafkaAutoConfiguration.class, ObjectMapperTestConfig.class, UserRepository.class, UserService.class, CurrencyConversionService.class})
+@Import({KafkaAutoConfiguration.class, ObjectMapperTestConfig.class, UserService.class, LotPurchaseOutboxService.class})
 @Testcontainers
 class LotPurchaseOutboxServiceTest extends DBSuite {
   @Container
   @ServiceConnection
   public static final KafkaContainer KAFKA = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.4.0"));
 
+  @Autowired
+  private LotPurchaseOutboxService lotPurchaseOutboxService;
   @Autowired
   private UserRepository userRepository;
   @Autowired
@@ -61,8 +63,6 @@ class LotPurchaseOutboxServiceTest extends DBSuite {
   private KafkaTemplate<String, String> kafkaTemplate;
   @Autowired
   private ObjectMapper objectMapper;
-  @Autowired
-  private CurrencyConversionService currencyConversionService;
 
   private static KafkaTestConsumer consumer;
 

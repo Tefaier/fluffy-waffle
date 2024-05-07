@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Import;
@@ -33,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.*;
         "spring.kafka.consumer.auto-offset-reset=earliest"
     }
 )
-@Import({KafkaAutoConfiguration.class, ObjectMapperTestConfig.class, UserRepository.class, UserService.class})
+@Import({KafkaAutoConfiguration.class, ObjectMapperTestConfig.class, UserService.class})
 @Testcontainers
 class UserCreationConsumerTest extends DBSuite {
   @Container

@@ -2,17 +2,13 @@ package com.example.auction.models.gateways;
 
 import com.example.auction.models.DTOs.LotPurchaseRequest;
 import com.example.auction.models.DTOs.LotPurchaseResponse;
-import com.example.auction.models.entities.Money;
 import com.example.auction.models.entities.Request;
-import com.example.auction.models.entities.User;
-import com.example.auction.models.enums.LotState;
-import com.example.auction.models.exceptions.RequestAlreadyProcessedException;
+import com.example.auction.models.exceptions.NegativeMoneyException;
 import com.example.auction.models.repositories.RequestRepository;
 import com.example.auction.models.services.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gruelbox.transactionoutbox.TransactionOutbox;
-import jakarta.persistence.LockModeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -58,8 +53,8 @@ public class LotPurchaseOutboxService {
     this.requestRepository = requestRepository;
   }
 
-  public void pushPurchaseResponseToKafka(LotPurchaseResponse request) throws JsonProcessingException {
-    String message = objectMapper.writeValueAsString(request);
+  public void pushPurchaseResponseToKafka(UUID userId, Long lotId, Boolean isApproved) throws JsonProcessingException {
+    String message = objectMapper.writeValueAsString(new LotPurchaseResponse(userId, lotId, isApproved));
     CompletableFuture<SendResult<String, String>> sendResult = kafkaTemplate.send(topicToSend, message);
     try {
       sendResult.get(10, TimeUnit.SECONDS);
@@ -84,26 +79,25 @@ public class LotPurchaseOutboxService {
       return;
     }
 
-    try {
-      makePurchase(parsedValue);
-    } catch (RuntimeException e) {
-      requestRepository.save(new Request(parsedValue.requestId()));
-      outbox
-          .with()
-          .schedule(LotPurchaseOutboxService.class)
-          .pushPurchaseResponseToKafka(new LotPurchaseResponse(parsedValue.userId(), parsedValue.lotId(), Boolean.FALSE));
-    }
+    makePurchase(parsedValue);
     acknowledgment.acknowledge();
   }
 
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   private void makePurchase(LotPurchaseRequest request) throws JsonProcessingException {
     requestRepository.save(new Request(request.requestId()));
-    userService.subtractMoney(userService.getUser(request.userId()).getId(), request.value());
-    userService.addMoney(userService.getUser(request.lotOwnerId()).getId(), request.value());
-    outbox
-        .with()
-        .schedule(LotPurchaseOutboxService.class)
-        .pushPurchaseResponseToKafka(new LotPurchaseResponse(request.userId(), request.lotId(), Boolean.TRUE));
+    if (userService.getUser(request.userId()).getMoney().compareTo(request.value()) >= 0) {
+      userService.subtractMoney(userService.getUser(request.userId()).getId(), request.value());
+      userService.addMoney(userService.getUser(request.lotOwnerId()).getId(), request.value());
+      outbox
+          .with()
+          .schedule(getClass())
+          .pushPurchaseResponseToKafka(request.userId(), request.lotId(), Boolean.TRUE);
+    } else {
+      outbox
+          .with()
+          .schedule(getClass())
+          .pushPurchaseResponseToKafka(request.userId(), request.lotId(), Boolean.FALSE);
+    }
   }
 }
