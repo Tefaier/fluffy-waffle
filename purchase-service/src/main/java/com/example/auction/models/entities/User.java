@@ -1,5 +1,6 @@
 package com.example.auction.models.entities;
 
+import com.example.auction.models.enums.Currency;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -31,7 +32,7 @@ public class User {
 
   public User(UUID mainServiceId) {
     this.mainServiceId = mainServiceId;
-    this.money = new Money();
+    this.money = new Money(0L, 0L, Currency.RUB);
   }
 
   public Long getId() {

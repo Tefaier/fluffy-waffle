@@ -100,6 +100,7 @@ public class LotPurchaseOutboxService {
   private void makePurchase(LotPurchaseRequest request) throws JsonProcessingException {
     requestRepository.save(new Request(request.requestId()));
     userService.subtractMoney(userService.getUser(request.userId()).getId(), request.value());
+    userService.addMoney(userService.getUser(request.lotOwnerId()).getId(), request.value());
     outbox
         .with()
         .schedule(LotPurchaseOutboxService.class)

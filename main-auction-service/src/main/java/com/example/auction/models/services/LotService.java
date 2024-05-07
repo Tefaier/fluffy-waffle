@@ -98,6 +98,7 @@ public class LotService {
                     UUID.randomUUID(),
                     lot.getUser().getId(),
                     lot.getId(),
+                    lot.getUser().getId(),
                     betService
                         .getHighestValueBet(lot.getLotBets())
                         .getValue())

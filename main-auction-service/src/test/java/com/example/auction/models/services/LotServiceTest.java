@@ -24,7 +24,7 @@ import java.util.List;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Import({
-    BetService.class, LotService.class, UserService.class, ObjectMapperTestConfig.class
+    ObjectMapperTestConfig.class //, BetService.class, LotService.class, UserService.class
 })
 class LotServiceTest extends DBSuite {
   @Autowired
