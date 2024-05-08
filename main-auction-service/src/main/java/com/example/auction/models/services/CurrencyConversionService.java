@@ -5,6 +5,6 @@ import org.springframework.stereotype.Service;
 
 public class CurrencyConversionService {
   public static float getCurrencyRatio(Currency from, Currency to) {
-    return to.getComparativeValue() / from.getComparativeValue();
+    return from.getComparativeValue() / to.getComparativeValue();
   }
 }

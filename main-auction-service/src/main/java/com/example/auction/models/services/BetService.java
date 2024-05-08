@@ -42,7 +42,9 @@ public class BetService {
     public long makeBet(UUID userId, long lotId, Money value) {
         User user = userService.getUser(userId);
         Lot lot = lotService.getLot(lotId);
-        //entityManager.lock(user, LockModeType.PESSIMISTIC_WRITE); // seems excessive
+        if (lot.getUser().getId() == user.getId()) {
+            throw new InvalidBetException("Can't create bet on user's own lot");
+        }
         entityManager.lock(lot, LockModeType.PESSIMISTIC_WRITE);
         Bet mostValueBet = getHighestValueBet(lot.getLotBets());
         if (validateLot(user, lot, value, mostValueBet == null ? null : mostValueBet.getValue())) {
@@ -67,7 +69,11 @@ public class BetService {
             return false;
         }
         // lot already finished
-        if (!(lot.getLotState() == LotState.NOT_SOLD && lot.getFinishTime().toInstant().isBefore(Instant.now()))) {
+        if (lot.getFinishTime().toInstant().isBefore(Instant.now())) {
+            return false;
+        }
+        // lot has not started yet
+        if (Instant.now().isBefore(lot.getStartTime().toInstant())) {
             return false;
         }
         return true;

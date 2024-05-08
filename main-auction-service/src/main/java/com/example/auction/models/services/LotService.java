@@ -30,15 +30,17 @@ public class LotService {
     private final UserService userService;
     private final BetService betService;
     private final TransactionOutbox outbox;
+    private final LotPurchaseOutboxService outboxService;
 
     private final Duration LOT_FINISH_TIME_OFFSET = Duration.ofDays(7);
 
     @Autowired
-    public LotService(LotRepository lotRepository, UserService userService, @Lazy BetService betService, @Lazy TransactionOutbox outbox) {
+    public LotService(LotRepository lotRepository, UserService userService, @Lazy BetService betService, @Lazy TransactionOutbox outbox, LotPurchaseOutboxService outboxService) {
         this.lotRepository = lotRepository;
         this.userService = userService;
         this.betService = betService;
         this.outbox = outbox;
+        this.outboxService = outboxService;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -93,7 +95,7 @@ public class LotService {
             lot.setLotState(LotState.IN_PROGRESS);
             outbox
                 .with()
-                .schedule(LotPurchaseOutboxService.class)
+                .schedule(outboxService.getClass())
                 .pushPurchaseRequestToKafka(new LotPurchaseRequest(
                     UUID.randomUUID(),
                     lot.getUser().getId(),
