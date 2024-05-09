@@ -69,6 +69,8 @@ class LotBuyKafkaTest extends DBSuite {
   @Autowired
   private LotService lotService;
   @Autowired
+  private UserRepository userRepository;
+  @Autowired
   private LotRepository lotRepository;
   @Autowired
   private BetRepository betRepository;
@@ -89,6 +91,14 @@ class LotBuyKafkaTest extends DBSuite {
   static void setupKafkaConsumer() {
     consumer = new KafkaTestConsumer(KAFKA.getBootstrapServers(), "some-group-id");
     consumer.subscribe(List.of("some-test-topic"));
+  }
+
+  @BeforeEach
+  @Transactional
+  void clearInfo() {
+    userRepository.deleteAll();
+    lotRepository.deleteAll();
+    betRepository.deleteAll();
   }
 
   @Transactional

@@ -52,7 +52,7 @@ public class OutboxControlService implements TransactionOutboxListener {
         lotService.getLot(((LotPurchaseRequest) arguments[0]).lotId()).setLotState(LotState.REJECTED);
       }
       case ("pushUserCreationRequestToKafka") -> {
-        LOGGER.warn("Failed to push creation of user to sub services: " + ((UserTransitionRequest) arguments[0]).userId() + ", will unblock entry and try again");
+        LOGGER.warn("Failed to push creation of user to sub services: " + arguments[0] + ", will unblock entry and try again");
         entry.setBlocked(false);
       }
     }

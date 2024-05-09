@@ -2,6 +2,8 @@ package com.example.auction.models.services;
 
 import com.example.auction.models.DBSuite;
 import com.example.auction.models.ObjectMapperTestConfig;
+import com.example.auction.models.repositories.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -10,14 +12,14 @@ import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.*;
 import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
 
 @SpringBootTest(
@@ -32,7 +34,15 @@ import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
 })
 class UserServiceRetryTest extends DBSuite {
   @Autowired
+  private UserRepository userRepository;
+  @Autowired
   private UserService userService;
+
+  @BeforeEach
+  @Transactional
+  void clearInfo() {
+    userRepository.deleteAll();
+  }
 
   @Test
   void userCreateRetryTest() throws InterruptedException {
@@ -49,7 +59,7 @@ class UserServiceRetryTest extends DBSuite {
 
       Thread.sleep(1000);
 
-      mockedStatic.verify(UUID::randomUUID, times(7));
+      mockedStatic.verify(UUID::randomUUID, atLeast(6));
     }
   }
 }

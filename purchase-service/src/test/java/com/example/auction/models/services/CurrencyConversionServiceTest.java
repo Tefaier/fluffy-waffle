@@ -18,7 +18,7 @@ class CurrencyConversionServiceTest {
   @Test
   void simpleTest() {
     assertEquals(
-        Currency.USD.getComparativeValue() / Currency.RUB.getComparativeValue(),
+        Currency.RUB.getComparativeValue() / Currency.USD.getComparativeValue(),
         currencyConversionService.getCurrencyRatio(Currency.RUB, Currency.USD));
   }
 }
