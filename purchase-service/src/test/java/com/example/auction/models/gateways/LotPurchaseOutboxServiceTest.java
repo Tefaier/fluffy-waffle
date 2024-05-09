@@ -41,7 +41,7 @@ import java.util.UUID;
 @SpringBootTest(
     properties = {
         "topic-lot-purchase-request=some-test-topic",
-        "topic-lot-purchase-result=some-test-topic-response",
+        "topic-lot-purchase-result=some-test-topic-response2",
         "spring.kafka.consumer.group-id=some-consumer-group",
         "outbox-flush-frequency=500",
         "spring.kafka.consumer.auto-offset-reset=earliest"
@@ -79,8 +79,8 @@ class LotPurchaseOutboxServiceTest extends DBSuite {
   }
 
   static void setupKafkaConsumer() {
-    consumer = new KafkaTestConsumer(KAFKA.getBootstrapServers(), "some-group-id");
-    consumer.subscribe(List.of("some-test-topic-response"));
+    consumer = new KafkaTestConsumer(KAFKA.getBootstrapServers(), "some-group-id2");
+    consumer.subscribe(List.of("some-test-topic-response2"));
   }
 
   @Transactional
