@@ -8,6 +8,7 @@ import com.gruelbox.transactionoutbox.TransactionOutbox;
 import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,7 +27,7 @@ public class UserService implements UserDetailsService {
     private final UserCreationOutboxService userOutbox;
 
     @Autowired
-    public UserService(UserRepository userRepository, TransactionOutbox outbox, UserCreationOutboxService userOutbox) {
+    public UserService(UserRepository userRepository, @Lazy TransactionOutbox outbox, UserCreationOutboxService userOutbox) {
         this.userRepository = userRepository;
         this.outbox = outbox;
         this.userOutbox = userOutbox;

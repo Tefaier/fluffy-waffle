@@ -2,15 +2,28 @@ package com.example.auction.models.services;
 
 import com.example.auction.models.DBSuite;
 import com.example.auction.models.ObjectMapperTestConfig;
+import com.example.auction.models.configurations.TransactionOutboxConfig;
 import com.example.auction.models.entities.Money;
 import com.example.auction.models.enums.Currency;
 import com.example.auction.models.exceptions.InvalidBetException;
+import com.example.auction.models.gateways.LotPurchaseOutboxService;
+import com.example.auction.models.gateways.OutboxControlService;
+import com.example.auction.models.gateways.UserCreationOutboxService;
+import com.example.auction.models.repositories.BetRepository;
+import com.example.auction.models.repositories.LotRepository;
+import com.example.auction.models.repositories.UserRepository;
+import com.gruelbox.transactionoutbox.TransactionOutbox;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Duration;
@@ -25,17 +38,32 @@ import static org.junit.jupiter.api.Assertions.*;
         "resilience4j.retry.instances.user-generation.max-attempts=1"
     }
 )
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Import({
-    ObjectMapperTestConfig.class
+    KafkaAutoConfiguration.class, ObjectMapperTestConfig.class, UserService.class, LotService.class, BetService.class, LotPurchaseOutboxService.class, UserCreationOutboxService.class, TransactionOutboxConfig.class, OutboxControlService.class
 })
 class DBServicesTest extends DBSuite {
+  @Autowired
+  private UserRepository userRepository;
+  @Autowired
+  private LotRepository lotRepository;
+  @Autowired
+  private BetRepository betRepository;
   @Autowired
   private UserService userService;
   @Autowired
   private LotService lotService;
   @Autowired
   private BetService betService;
+
+  @BeforeEach
+  @Transactional
+  void clearInfo() {
+    userRepository.deleteAll();
+    lotRepository.deleteAll();
+    betRepository.deleteAll();
+  }
 
   @Test
   void lotArrayCheck() {
@@ -61,7 +89,7 @@ class DBServicesTest extends DBSuite {
     Money start = new Money(50L, 0L, Currency.RUB);
     Money add = new Money(10L, 0L, Currency.RUB);
     Timestamp beginNeg = Timestamp.from(Instant.now().minus(Duration.ofDays(1)));
-    Timestamp beginPos = Timestamp.from(Instant.now().minus(Duration.ofDays(1)));
+    Timestamp beginPos = Timestamp.from(Instant.now().plus(Duration.ofDays(1)));
     Timestamp end = Timestamp.from(Instant.now().plus(Duration.ofDays(10)));
     var userUUID1 = userService.createUser("1", "1", "1", "1", "myemail1@company.com");
     // same login exception

@@ -32,7 +32,7 @@ public class OutboxControlService implements TransactionOutboxListener {
   public OutboxControlService(KafkaTemplate<String, String> kafkaTemplate,
                               @Value("${topic-lot-purchase-request}") String topicToSend,
                               ObjectMapper objectMapper,
-                              LotService lotService,
+                              @Lazy LotService lotService,
                               @Lazy TransactionOutbox outbox) {
     this.kafkaTemplate = kafkaTemplate;
     this.topicToSend = topicToSend;

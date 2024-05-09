@@ -112,7 +112,7 @@ class LotBuyKafkaTest extends DBSuite {
   }
 
   @Test
-  private void sendTest() throws InterruptedException, JsonProcessingException {
+  void sendTest() throws InterruptedException, JsonProcessingException {
     var userUUID1 = userService.createUser("1", "1", "1", "1", "myemail1@company.com");
     var userUUID2 = userService.createUser("2", "2", "2", "2", "myemail2@company.com");
 
@@ -130,7 +130,7 @@ class LotBuyKafkaTest extends DBSuite {
             assertEquals(userUUID1, value.userId());
             assertEquals(userUUID2, value.lotOwnerId());
             assertEquals(boughtLotId, value.lotId());
-            assertEquals(buyMoney, value.value());
+            assertEquals(0, value.value().compareTo(buyMoney));
           } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
           }

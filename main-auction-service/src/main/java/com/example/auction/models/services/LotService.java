@@ -1,6 +1,7 @@
 package com.example.auction.models.services;
 
 import com.example.auction.models.DTOs.LotPurchaseRequest;
+import com.example.auction.models.entities.Bet;
 import com.example.auction.models.entities.Lot;
 import com.example.auction.models.entities.Money;
 import com.example.auction.models.entities.User;
@@ -16,6 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ClassUtils;
 
 import java.sql.Timestamp;
 import java.time.Duration;
@@ -26,16 +28,16 @@ import java.util.UUID;
 
 @Service
 public class LotService {
-    private final LotRepository lotRepository;
-    private final UserService userService;
-    private final BetService betService;
-    private final TransactionOutbox outbox;
-    private final LotPurchaseOutboxService outboxService;
+    private LotRepository lotRepository;
+    private UserService userService;
+    private BetService betService;
+    private TransactionOutbox outbox;
+    private LotPurchaseOutboxService outboxService;
 
     private final Duration LOT_FINISH_TIME_OFFSET = Duration.ofDays(7);
 
     @Autowired
-    public LotService(LotRepository lotRepository, UserService userService, @Lazy BetService betService, @Lazy TransactionOutbox outbox, LotPurchaseOutboxService outboxService) {
+    public LotService(LotRepository lotRepository, UserService userService, BetService betService, TransactionOutbox outbox, LotPurchaseOutboxService outboxService) {
         this.lotRepository = lotRepository;
         this.userService = userService;
         this.betService = betService;
@@ -93,17 +95,16 @@ public class LotService {
             lot.setLotState(LotState.UNSOLD);
         } else {
             lot.setLotState(LotState.IN_PROGRESS);
+            Bet highestBet = betService.getHighestValueBet(lot.getLotBets());
             outbox
                 .with()
                 .schedule(outboxService.getClass())
-                .pushPurchaseRequestToKafka(new LotPurchaseRequest(
+                .pushPurchaseRequestToKafka(
                     UUID.randomUUID(),
-                    lot.getUser().getId(),
+                    highestBet.getUser().getId(),
                     lot.getId(),
                     lot.getUser().getId(),
-                    betService
-                        .getHighestValueBet(lot.getLotBets())
-                        .getValue())
+                    highestBet.getValue()
                 );
         }
         lotRepository.save(lot);

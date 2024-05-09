@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 )
 @Import({KafkaAutoConfiguration.class, ObjectMapperTestConfig.class, UserService.class})
 @Testcontainers
-public class UserServiceKafkaTest extends DBSuite {
+class UserServiceKafkaTest extends DBSuite {
   @Container
   @ServiceConnection
   public static final KafkaContainer KAFKA = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.4.0"));

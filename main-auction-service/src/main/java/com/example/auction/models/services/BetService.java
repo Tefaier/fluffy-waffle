@@ -10,6 +10,7 @@ import com.example.auction.models.repositories.BetRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,7 @@ public class BetService {
     private final EntityManager entityManager;
 
     @Autowired
-    public BetService(BetRepository betRepository, UserService userService, LotService lotService, EntityManager entityManager) {
+    public BetService(BetRepository betRepository, UserService userService, @Lazy LotService lotService, EntityManager entityManager) {
         this.betRepository = betRepository;
         this.userService = userService;
         this.lotService = lotService;
