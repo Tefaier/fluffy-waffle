@@ -14,6 +14,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -36,10 +37,11 @@ public class UserCreationOutboxService {
     this.objectMapper = objectMapper;
   }
 
-  public void pushUserCreationRequestToKafka(UserTransitionRequest request) throws JsonProcessingException {
-    String message = objectMapper.writeValueAsString(request);
-    CompletableFuture<SendResult<String, String>> sendResult = kafkaTemplate.send(topicToSend, message);
+  public void pushUserCreationRequestToKafka(UUID userId) {
+    String message = "";
     try {
+      message = objectMapper.writeValueAsString(new UserTransitionRequest(userId));
+      CompletableFuture<SendResult<String, String>> sendResult = kafkaTemplate.send(topicToSend, message);
       sendResult.get(5, TimeUnit.SECONDS);
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
@@ -48,6 +50,8 @@ public class UserCreationOutboxService {
     } catch (ExecutionException | TimeoutException e) {
       LOGGER.warn("Failed to send message to Kafka with message: " + message);
       throw new IllegalStateException("Failed to send to Kafka", e);
+    } catch (JsonProcessingException e) {
+      throw new IllegalStateException("Failed to convert object to string", e);
     }
   }
 }

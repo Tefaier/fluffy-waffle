@@ -2,10 +2,13 @@ package com.example.auction.models.services;
 
 import com.example.auction.models.entities.User;
 import com.example.auction.models.enums.Role;
+import com.example.auction.models.gateways.UserCreationOutboxService;
 import com.example.auction.models.repositories.UserRepository;
+import com.gruelbox.transactionoutbox.TransactionOutbox;
 import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,12 +23,14 @@ import java.util.UUID;
 @Service
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
-    private final EntityManager entityManager;
+    private final TransactionOutbox outbox;
+    private final UserCreationOutboxService userOutbox;
 
     @Autowired
-    public UserService(UserRepository userRepository, EntityManager entityManager) {
+    public UserService(UserRepository userRepository, @Lazy TransactionOutbox outbox, UserCreationOutboxService userOutbox) {
         this.userRepository = userRepository;
-        this.entityManager = entityManager;
+        this.outbox = outbox;
+        this.userOutbox = userOutbox;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -43,6 +48,10 @@ public class UserService implements UserDetailsService {
     public UUID createUser(String login, String firstName, String lastName, String passwordHash, String email) {
         User user = new User(login, firstName, lastName, passwordHash, Set.of(Role.USER), email);
         userRepository.save(user);
+        outbox
+            .with()
+            .schedule(userOutbox.getClass())
+            .pushUserCreationRequestToKafka(user.getId());
         return user.getId();
     }
 

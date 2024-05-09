@@ -9,13 +9,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.spring6.context.SpringContextUtils;
 
 @Embeddable
 public class Money implements Comparable<Money> {
-  @Autowired
-  @Transient
-  private CurrencyConversionService conversionService;
-
   @Column
   @PositiveOrZero
   @NotNull
@@ -89,7 +86,7 @@ public class Money implements Comparable<Money> {
   public Money convertToCurrency(Currency to) {
     if (to == currency) return this;
     double value = Money.getDoubleValue(this);
-    value *= conversionService.getCurrencyRatio(currency, to);
+    value *= CurrencyConversionService.getCurrencyRatio(currency, to);
     var parts = Double.toString(value).split("\\.");
     long newIntPart = Long.parseLong(parts[0]);
     long newDecPart = Long.parseLong(new StringBuilder(parts[1]).reverse().toString());

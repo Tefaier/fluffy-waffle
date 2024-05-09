@@ -2,6 +2,7 @@ package com.example.auction.models.gateways;
 
 import com.example.auction.models.DTOs.LotPurchaseRequest;
 import com.example.auction.models.DTOs.LotPurchaseResponse;
+import com.example.auction.models.entities.Money;
 import com.example.auction.models.enums.LotState;
 import com.example.auction.models.services.LotService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.Acknowledgment;
@@ -19,6 +21,7 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -28,25 +31,32 @@ import java.util.concurrent.TimeoutException;
 public class LotPurchaseOutboxService {
   private static final Logger LOGGER = LoggerFactory.getLogger(LotPurchaseOutboxService.class);
 
-  private final KafkaTemplate<String, String> kafkaTemplate;
-  private final String topicToSend;
-  private final ObjectMapper objectMapper;
-  private final LotService lotService;
+  private static LotPurchaseOutboxService createdComponent;
+
+  private KafkaTemplate<String, String> kafkaTemplate;
+  private String topicToSend;
+  private ObjectMapper objectMapper;
+  private LotService lotService;
 
   @Autowired
   public LotPurchaseOutboxService(KafkaTemplate<String, String> kafkaTemplate,
                                   @Value("${topic-lot-purchase-request}") String topicToSend,
                                   ObjectMapper objectMapper,
-                                  LotService lotService) {
+                                  @Lazy LotService lotService) {
     this.kafkaTemplate = kafkaTemplate;
     this.topicToSend = topicToSend;
     this.objectMapper = objectMapper;
     this.lotService = lotService;
+    LotPurchaseOutboxService.createdComponent = this;
   }
 
-  public void pushPurchaseRequestToKafka(LotPurchaseRequest request) throws JsonProcessingException {
-    String message = objectMapper.writeValueAsString(request);
-    CompletableFuture<SendResult<String, String>> sendResult = kafkaTemplate.send(topicToSend, String.valueOf(request.userId()), message);
+  public void pushPurchaseRequestToKafka(UUID requestId, UUID userId, Long lotId, UUID lotOwnerId, Money value) throws JsonProcessingException {
+    if (this != createdComponent) {
+      createdComponent.pushPurchaseRequestToKafka(requestId, userId, lotId, lotOwnerId, value);
+      return;
+    }
+    String message = objectMapper.writeValueAsString(new LotPurchaseRequest(requestId, userId, lotId, lotOwnerId, value));
+    CompletableFuture<SendResult<String, String>> sendResult = kafkaTemplate.send(topicToSend, String.valueOf(userId), message);
     try {
       sendResult.get(5, TimeUnit.SECONDS);
     } catch (InterruptedException e) {
