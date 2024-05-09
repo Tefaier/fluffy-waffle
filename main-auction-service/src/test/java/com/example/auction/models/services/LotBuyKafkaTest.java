@@ -47,9 +47,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @SpringBootTest(
     properties = {
-        "topic-lot-purchase-request=some-test-topic",
-        "topic-lot-purchase-result=some-test-topic-response",
-        "spring.kafka.consumer.group-id=some-consumer-group",
+        "topic-lot-purchase-request=some-test-topic3",
+        "topic-lot-purchase-result=some-test-topic-response3",
+        "spring.kafka.consumer.group-id=some-consumer-group2",
         "outbox-flush-frequency=500",
         "spring.kafka.consumer.auto-offset-reset=earliest",
         "finished-lots-check-delay=500"
@@ -89,8 +89,8 @@ class LotBuyKafkaTest extends DBSuite {
   }
 
   static void setupKafkaConsumer() {
-    consumer = new KafkaTestConsumer(KAFKA.getBootstrapServers(), "some-group-id");
-    consumer.subscribe(List.of("some-test-topic"));
+    consumer = new KafkaTestConsumer(KAFKA.getBootstrapServers(), "some-group-id3");
+    consumer.subscribe(List.of("some-test-topic3"));
   }
 
   @BeforeEach
@@ -149,7 +149,7 @@ class LotBuyKafkaTest extends DBSuite {
 
     assertEquals(LotState.UNSOLD, lotService.getLot(unboughtLotId).getLotState());
 
-    kafkaTemplate.send("some-test-topic-response", objectMapper.writeValueAsString(new LotPurchaseResponse(userUUID1, boughtLotId, Boolean.TRUE)));
+    kafkaTemplate.send("some-test-topic-response3", objectMapper.writeValueAsString(new LotPurchaseResponse(userUUID1, boughtLotId, Boolean.TRUE)));
 
     Thread.sleep(5000);
 
