@@ -10,3 +10,7 @@
     font-weight: var(--font_weight-bold);
     font-size: 1.2em;
 }
+
+.header__button:hover {
+    background-color: var(--color_accent_focus);
+}

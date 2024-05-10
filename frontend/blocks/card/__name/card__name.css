@@ -1,0 +1,5 @@
+.card__name {
+    margin: 10px 0;
+    font-weight: var(--font_weight-bold);
+    font-size: 30px;
+}

@@ -1,0 +1,15 @@
+.card {
+    background-color: var(--color_dark);
+    padding: 15px;
+    border: 1px solid #555;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+    width: 400px;
+    height: 700px
+}
+
+.card:hover {
+    /* transform: scale(1.05); */
+    border-color: var(--color_accent);
+}

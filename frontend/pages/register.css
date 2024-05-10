@@ -6,15 +6,18 @@
 @import "../blocks/page/page.css";
 @import "../blocks/main/main.css";
 
-@import "../blocks/form/form.css";
-
 @import "../blocks/header/header.css";
 @import "../blocks/header/__title/header__title.css";
 @import "../blocks/header/__logo/header__logo.css";
 @import "../blocks/header/__button/header__button.css";
+
+
+@import "../blocks/form/form.css";
 
 @import "../blocks/registration-form/registration-form.css";
 @import "../blocks/registration-form/__field/registration-form__field.css";
 @import "../blocks/registration-form/__label/registration-form__label.css";
 @import "../blocks/registration-form/__button/registration-form__button.css";
 @import "../blocks/registration-form/__input/registration-form__input.css";
+
+@import "../blocks/card/card.css";
