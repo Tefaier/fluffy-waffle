@@ -1,0 +1,6 @@
+.header__title {
+  text-align: center;
+  font-weight: var(--font_weight-bold);
+  margin: 0;
+  margin: auto;
+}
