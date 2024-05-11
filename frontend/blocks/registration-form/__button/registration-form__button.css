@@ -12,3 +12,7 @@
 .registration-form__button:hover {
     background-color: var(--color_accent_focus);
 }
+
+.registration-form__button_secondary:hover ~ .registration-form__button {
+    background-color: var(--color_main);
+}
