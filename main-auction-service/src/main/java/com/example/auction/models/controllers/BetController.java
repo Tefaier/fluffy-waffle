@@ -1,12 +1,15 @@
 package com.example.auction.models.controllers;
 
 import com.example.auction.models.DTOs.BetMakingRequest;
+import com.example.auction.models.entities.Bet;
+import com.example.auction.models.entities.Money;
 import com.example.auction.models.services.BetService;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/bet")
 public class BetController {
   private final BetService betService;
 
@@ -15,8 +18,17 @@ public class BetController {
     this.betService = betService;
   }
 
-  @PostMapping("/bet/make")
-  public long createBet (@RequestBody BetMakingRequest request) {
-    return betService.makeBet(request.userId(), request.lotId(), request.value());
+  @PostMapping("/make")
+  public long createBet(@RequestBody BetMakingRequest request) {
+    var value = request.value();
+    return betService.makeBet(
+            request.userId(),
+            request.lotId(),
+            new Money(value.integerPart(), value.decimalPart(), value.currency()));
+  }
+
+  @GetMapping("/{id}")
+  public Bet getBetById(@NotNull @PathVariable("id") Long betId) {
+    return betService.getBet(betId);
   }
 }

@@ -1,13 +1,15 @@
 package com.example.auction.models.controllers;
 
 import com.example.auction.models.DTOs.UserRegistryRequest;
+import com.example.auction.models.entities.Lot;
 import com.example.auction.models.services.UserService;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -30,5 +32,10 @@ public class UserController {
   @DeleteMapping("/{id}")
   public void deleteUser(@NotNull @PathVariable("id") UUID userId) {
     userService.deleteUser(userId);
+  }
+
+  @GetMapping("/{id}")
+  public Map<UserService.LotUserStatus, List<Lot>> getLotByUser(@NotNull @PathVariable("id") UUID userId){
+    return userService.getRelatedLots(userId);
   }
 }
