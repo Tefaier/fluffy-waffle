@@ -1,0 +1,9 @@
+:root {
+    --color_main: #2A2C2F;
+    --color_dark: rgb(29, 32, 35);
+    --color_text-main: #FFFFFF;
+    --color_accent: rgb(255, 0, 50);
+    --color_accent_focus: rgba(255, 0, 50, .8);
+    --font_weight-normal: 300;
+    --font_weight-bold: 900;
+}

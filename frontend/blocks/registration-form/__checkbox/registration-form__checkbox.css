@@ -1,0 +1,13 @@
+.registration-form__checkbox {
+    visibility: hidden;
+    position: absolute;
+    user-select: none;
+}
+
+.registration-form__checkbox:checked + .registration-form__checkbox__mock {
+    background-color: var(--color_accent);
+}
+
+.registration-form__checkbox:checked + .registration-form__checkbox__mock::after {
+    display: block;
+}

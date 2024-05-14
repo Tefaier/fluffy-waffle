@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface LotRepository extends JpaRepository<Lot, Long> {
   List<Lot> findByFinishTimeLessThanAndLotState(Timestamp finishTime, LotState lotState);
+
+  List<Lot> findByStartTimeLessThanAndLotState(Timestamp startTime, LotState lotState);
 }

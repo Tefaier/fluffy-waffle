@@ -34,7 +34,7 @@ public class UserCreationConsumer {
     this.objectMapper = objectMapper;
   }
 
-  @KafkaListener(topics = {"${user-create}"})
+  @KafkaListener(topics = {"${topic-user-creation-request}"})
   public void consumeUserCreation(String message, Acknowledgment acknowledgment) throws JsonProcessingException {
     var parsedValue = objectMapper.readValue(message, UserTransitionRequest.class);
     LOGGER.info("Consumed message from Kafka: " + message);

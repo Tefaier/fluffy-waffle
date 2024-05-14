@@ -17,8 +17,7 @@ import org.springframework.context.annotation.Import;
 import java.time.Duration;
 
 @Configuration
-@ComponentScan(value = "com.example.auction.models.gateways")
-@Import({SpringTransactionManager.class, SpringInstantiator.class})
+@Import({SpringTransactionManager.class, SpringInstantiator.class, OutboxControlService.class})
 public class TransactionOutboxConfig {
   @Autowired
   private OutboxControlService outboxControlService;
@@ -28,12 +27,12 @@ public class TransactionOutboxConfig {
                                              SpringInstantiator springInstantiator,
                                              @Value("${outbox-attempt-frequency}") Duration attemptFrequency) {
     return TransactionOutbox.builder()
-            .instantiator(springInstantiator)
-            .transactionManager(springTransactionManager)
-            .persistor(Persistor.forDialect(Dialect.POSTGRESQL_9))
-            .attemptFrequency(attemptFrequency)
-            .blockAfterAttempts(5)
-            .listener(outboxControlService)
-            .build();
+        .instantiator(springInstantiator)
+        .transactionManager(springTransactionManager)
+        .persistor(Persistor.forDialect(Dialect.POSTGRESQL_9))
+        .attemptFrequency(attemptFrequency)
+        .blockAfterAttempts(5)
+        .listener(outboxControlService)
+        .build();
   }
 }

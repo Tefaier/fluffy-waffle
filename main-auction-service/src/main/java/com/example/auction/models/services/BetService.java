@@ -10,6 +10,7 @@ import com.example.auction.models.repositories.BetRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,7 @@ public class BetService {
     private final EntityManager entityManager;
 
     @Autowired
-    public BetService(BetRepository betRepository, UserService userService, LotService lotService, EntityManager entityManager) {
+    public BetService(BetRepository betRepository, UserService userService, @Lazy LotService lotService, EntityManager entityManager) {
         this.betRepository = betRepository;
         this.userService = userService;
         this.lotService = lotService;
@@ -42,7 +43,9 @@ public class BetService {
     public long makeBet(UUID userId, long lotId, Money value) {
         User user = userService.getUser(userId);
         Lot lot = lotService.getLot(lotId);
-        //entityManager.lock(user, LockModeType.PESSIMISTIC_WRITE); // seems excessive
+        if (lot.getUser().getId() == user.getId()) {
+            throw new InvalidBetException("Can't create bet on user's own lot");
+        }
         entityManager.lock(lot, LockModeType.PESSIMISTIC_WRITE);
         Bet mostValueBet = getHighestValueBet(lot.getLotBets());
         if (validateLot(user, lot, value, mostValueBet == null ? null : mostValueBet.getValue())) {
@@ -67,7 +70,11 @@ public class BetService {
             return false;
         }
         // lot already finished
-        if (!(lot.getLotState() == LotState.NOT_SOLD && lot.getFinishTime().toInstant().isBefore(Instant.now()))) {
+        if (lot.getFinishTime().toInstant().isBefore(Instant.now())) {
+            return false;
+        }
+        // lot has not started yet
+        if (Instant.now().isBefore(lot.getStartTime().toInstant())) {
             return false;
         }
         return true;

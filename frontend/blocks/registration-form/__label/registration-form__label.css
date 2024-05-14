@@ -1,0 +1,5 @@
+.registration-form__label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: var(--font_weight-normal);
+}

@@ -12,11 +12,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 import java.time.Duration;
 
 @Configuration
-@ComponentScan(value = "com.example.auction.models.gateways")
+@Import({SpringTransactionManager.class, SpringInstantiator.class, OutboxControlService.class})
 public class TransactionOutboxConfig {
   @Autowired
   private OutboxControlService outboxControlService;

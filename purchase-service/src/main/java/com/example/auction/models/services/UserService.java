@@ -36,7 +36,6 @@ public class UserService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    @Retry(name = "user-generation")
     public Long createUser(UUID mainServiceId) {
         User user = new User(mainServiceId);
         userRepository.save(user);

@@ -1,0 +1,16 @@
+.header__button {
+    background-color: var(--color_accent);
+    color: var(--color_text-main);
+    border: none;
+    border-radius: 4px;
+    padding: 0 10px;
+    cursor: pointer;
+    height: 50px;
+    margin: auto 5px;
+    font-weight: var(--font_weight-bold);
+    font-size: 1.2em;
+}
+
+.header__button:hover {
+    background-color: var(--color_accent_focus);
+}
