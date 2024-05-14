@@ -22,3 +22,7 @@
 .card__control:active {
     opacity: .8;
 }
+
+.card__control span {
+    width: 100%;
+}
