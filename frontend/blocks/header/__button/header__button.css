@@ -9,6 +9,14 @@
     margin: auto 5px;
     font-weight: var(--font_weight-bold);
     font-size: 1.2em;
+    display: flex;
+    text-decoration: none;
+}
+
+.header__button span {
+    display: block;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .header__button:hover {
