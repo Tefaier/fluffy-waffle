@@ -1,0 +1,37 @@
+@import "../vendor/normalize.css";
+@import "../vendor/variables.css";
+
+@import "../blocks/body/body.css";
+
+@import "../blocks/page/page.css";
+@import "../blocks/main/main.css";
+
+@import "../blocks/header/header.css";
+@import "../blocks/header/__title/header__title.css";
+@import "../blocks/header/__logo/header__logo.css";
+@import "../blocks/header/__button/header__button.css";
+
+
+@import "../blocks/cards/cards.css";
+
+@import "../blocks/card/card.css";
+@import "../blocks/card/__control/card__control.css";
+@import "../blocks/card/__description/card__description.css";
+@import "../blocks/card/__gallery/card__gallery.css";
+@import "../blocks/card/__name/card__name.css";
+@import "../blocks/card/__owner/card__owner.css";
+@import "../blocks/card/__time/card__time.css";
+@import "../blocks/card/__price/card__price.css";
+@import "../blocks/card/__image/card__image.css";
+@import "../blocks/card/__control/_position/card__control_position_left.css";
+@import "../blocks/card/__control/_position/card__control_position_right.css";
+@import "../blocks/card/__status/card__status.css";
+@import "../blocks/card/__status/_beaten/card__status_beaten.css";
+@import "../blocks/card/__status/_last/card__status_last.css";
+@import "../blocks/card/__status/_payment/card__status_payment.css";
+
+@import "../blocks/info/info.css";
+
+@import "../blocks/menu/menu.css";
+@import "../blocks/menu/__option/menu__option.css";
+@import "../blocks/menu/__option/_right/menu__option_right.css";

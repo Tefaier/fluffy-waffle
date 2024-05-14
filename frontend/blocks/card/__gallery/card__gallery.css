@@ -1,0 +1,8 @@
+.card__gallery {
+    width: 100%;
+    background-color: blue;
+    position: relative;
+    border-radius: 8px;
+    height: 500px;
+    margin-bottom: 15px;
+}
