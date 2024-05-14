@@ -40,8 +40,8 @@ import java.util.UUID;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @SpringBootTest(
     properties = {
-        "topic-lot-purchase-request=some-test-topic",
-        "topic-lot-purchase-result=some-test-topic-response2",
+        "topic-lot-purchase-request=some-test-topic5",
+        "topic-lot-purchase-result=some-test-topic-response6",
         "spring.kafka.consumer.group-id=some-consumer-group",
         "outbox-flush-frequency=500",
         "spring.kafka.consumer.auto-offset-reset=earliest"
@@ -80,7 +80,7 @@ class LotPurchaseOutboxServiceTest extends DBSuite {
 
   static void setupKafkaConsumer() {
     consumer = new KafkaTestConsumer(KAFKA.getBootstrapServers(), "some-group-id2");
-    consumer.subscribe(List.of("some-test-topic-response2"));
+    consumer.subscribe(List.of("some-test-topic-response6"));
   }
 
   @Transactional
@@ -117,9 +117,9 @@ class LotPurchaseOutboxServiceTest extends DBSuite {
         new LotPurchaseRequest(requestId1, userId2, 10L, userId1, new Money(45L, 5L, Currency.RUB)),
         new LotPurchaseRequest(requestId2, userId2, 20L, userId1, new Money(50L, 0L, Currency.EUR)),
         new LotPurchaseRequest(requestId2, userId2, 12L, userId1, new Money(50L, 0L, Currency.RUB)));
-    kafkaTemplate.send("some-test-topic", objectMapper.writeValueAsString(requests.get(0)));
-    kafkaTemplate.send("some-test-topic", objectMapper.writeValueAsString(requests.get(1)));
-    kafkaTemplate.send("some-test-topic", objectMapper.writeValueAsString(requests.get(2)));
+    kafkaTemplate.send("some-test-topic5", objectMapper.writeValueAsString(requests.get(0)));
+    kafkaTemplate.send("some-test-topic5", objectMapper.writeValueAsString(requests.get(1)));
+    kafkaTemplate.send("some-test-topic5", objectMapper.writeValueAsString(requests.get(2)));
 
     Thread.sleep(5000);
 
