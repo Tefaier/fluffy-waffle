@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/api/user")
 public class UserController {
   private final UserService userService;
   private final PasswordEncoder passwordEncoder;
@@ -27,7 +27,7 @@ public class UserController {
             passwordEncoder.encode(request.password()), request.email());
   }
 
-  @DeleteMapping("/delete/{id}")
+  @DeleteMapping("/{id}")
   public void deleteUser(@NotNull @PathVariable("id") UUID userId) {
     userService.deleteUser(userId);
   }
