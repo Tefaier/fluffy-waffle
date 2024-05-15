@@ -62,7 +62,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void deleteUser(Long userId) {
+    public void deleteUser(UUID userId) {
         User user = userRepository.findById(userId).orElseThrow();
         userRepository.delete(user);
     }
