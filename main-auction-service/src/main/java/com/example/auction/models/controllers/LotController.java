@@ -6,10 +6,12 @@ import com.example.auction.models.entities.Money;
 import com.example.auction.models.services.LotService;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/lot")
+@PreAuthorize("isAuthenticated()")
 public class LotController {
   private final LotService lotService;
 

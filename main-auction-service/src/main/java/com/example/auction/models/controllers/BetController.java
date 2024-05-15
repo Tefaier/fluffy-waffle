@@ -6,10 +6,12 @@ import com.example.auction.models.entities.Money;
 import com.example.auction.models.services.BetService;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/bet")
+@PreAuthorize("isAuthenticated()")
 public class BetController {
   private final BetService betService;
 

@@ -5,6 +5,7 @@ import com.example.auction.models.entities.Lot;
 import com.example.auction.models.services.UserService;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class UserController {
   private final UserService userService;
   private final PasswordEncoder passwordEncoder;
+
   @Autowired
   public UserController(UserService userService, PasswordEncoder passwordEncoder) {
     this.userService = userService;
@@ -30,12 +32,14 @@ public class UserController {
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("@accessHandler.isAdmin(authentication)")
   public void deleteUser(@NotNull @PathVariable("id") UUID userId) {
     userService.deleteUser(userId);
   }
 
   @GetMapping("/{id}")
-  public Map<UserService.LotUserStatus, List<Lot>> getLotByUser(@NotNull @PathVariable("id") UUID userId){
+  @PreAuthorize("@accessHandler.checkInfoAccess(authentication, #userId)")
+  public Map<UserService.LotUserStatus, List<Lot>> getLotsByUser(@NotNull @PathVariable("id") UUID userId){
     return userService.getRelatedLots(userId);
   }
 }
