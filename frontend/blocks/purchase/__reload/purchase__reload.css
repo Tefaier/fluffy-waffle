@@ -1,0 +1,12 @@
+.purchase__reload {
+    display: inline-block;
+    cursor: pointer;
+    padding: 0 10px;
+    user-select: none;
+    color: var(--color_accent);
+    font-weight: bolder;
+}
+
+.purchase__reload:hover {
+    color: var(--color_accent_focus);
+}
