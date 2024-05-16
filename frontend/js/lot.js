@@ -22,10 +22,6 @@ function load() {
         .catch(error => console.error('Error while fetching data about lot:', error));
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    load();
-});
-
 function getCurrentPrice(bets) {
     return bets.reduce((max, currentBet) => {
         return betValue(currentBet) > betValue(max) ? currentBet : max;
@@ -37,5 +33,5 @@ function betValue(bet) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    getAllLots();
+    load();
 });
