@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Personal lots</title>
+    <link rel="stylesheet" href="pages/lot.css">
+</head>
+<body class="body">
+<div class="page">
+    <header class="header">
+        <img class="header__logo" src="https://static.mts.ru/mts_rf/images/category/f/i/promo-apps/logo_mts_services_70x70.svg" alt="Logo"/>
+        <h1 class="header__title">Mona Lisa</h1>
+        <a href="account.html" class="header__button"><span>Account</span></a>
+    </header>
+    <main class="main">
+        <section class="description">
+            <div class="description__gallery">
+                <div class="description__control description__control_position_left"><span>◄</span></div>
+                <img class="description__image" src="images/mona-lisa.png" alt="Picture">
+                <div class="description__control description__control_position_right"><span>►</span></div>
+            </div>
+            <div class="description__content">
+                <h2 class="description__title">Mona Lisa</h2>
+                <p class="description__text">The Mona Lisa or Monna Lisa is a half-length portrait painting by Italian artist Leonardo da Vinci. Considered an archetypal masterpiece of the Italian Renaissance, it has been described as "the best known, the most visited, the most written about, the most sung about, and the most parodied work of art in the world". The painting's novel qualities include the subject's enigmatic expression, monumentality of the composition, the subtle modelling of forms, and the atmospheric illusionism.</p>
+            </div>
+        </section>
+        <section class="purchase">
+            <h3 class="purchase__price">Current Price is <span class="purchase__price-value">$100M</span><span class="purchase__reload">⟳</span></h3>
+            <form id="register-form" class="registration-form" method="post">
+                <div class="registration-form__field">
+                    <label for="bet-value" class="registration-form__label">New bet:</label>
+                    <input class="registration-form__input" type="text" id="bet-value" name="bet-value" required>
+                </div>
+                <button type="submit" class="registration-form__button">Make bet</button>
+            </form>
+        </section>
+    </main>
+</div>
+</body>
+</html>

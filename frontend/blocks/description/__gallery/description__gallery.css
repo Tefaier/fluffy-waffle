@@ -1,8 +1,7 @@
-.card__gallery {
-    width: 100%;
+.description__gallery {
+    width: 600px;
     background-color: var(--color_main);
     position: relative;
     border-radius: 8px;
-    height: 500px;
-    margin-bottom: 15px;
+    height: 800px;
 }

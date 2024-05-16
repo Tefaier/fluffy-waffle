@@ -1,4 +1,4 @@
-.card__control {
+.description__control {
     position: absolute;
     height: 100%;
     width: 15%;
@@ -14,15 +14,19 @@
     user-select: none;
 }
 
-.card__control:hover {
+.description__control span {
+    text-align: center;
+}
+
+.description__control:hover {
     opacity: .7;
     cursor: pointer;
 }
 
-.card__control:active {
+.description__control:active {
     opacity: .8;
 }
 
-.card__control span {
+.description__control span {
     width: 100%;
 }
