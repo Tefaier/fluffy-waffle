@@ -32,7 +32,7 @@ public class UserService implements UserDetailsService {
     private final BetService betService;
 
     @Autowired
-    public UserService(UserRepository userRepository, @Lazy TransactionOutbox outbox, UserCreationOutboxService userOutbox, BetService betService) {
+    public UserService(UserRepository userRepository, @Lazy TransactionOutbox outbox, UserCreationOutboxService userOutbox, @Lazy BetService betService) {
         this.userRepository = userRepository;
         this.outbox = outbox;
         this.userOutbox = userOutbox;
@@ -62,7 +62,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void deleteUser(Long userId) {
+    public void deleteUser(UUID userId) {
         User user = userRepository.findById(userId).orElseThrow();
         userRepository.delete(user);
     }

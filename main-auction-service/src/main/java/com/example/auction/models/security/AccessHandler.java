@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class AccessHandler {
@@ -23,11 +24,15 @@ public class AccessHandler {
     return userService.getUser(username);
   }
 
-  private boolean isAdmin(Authentication authentication) {
+  public boolean isAdmin(Authentication authentication) {
     var authorities = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
         .map(Authentication::getPrincipal)
         .map(user -> (UserDetails) user)
         .map(UserDetails::getAuthorities).orElseThrow();
     return authorities.stream().anyMatch(auth -> "ADMIN".equals(auth.getAuthority()));
+  }
+
+  public boolean checkInfoAccess(Authentication authentication, UUID userId) {
+    return isAdmin(authentication) || getRelatedUser(authentication).getId().equals(userId);
   }
 }
