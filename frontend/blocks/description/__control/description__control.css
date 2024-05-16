@@ -1,0 +1,32 @@
+.description__control {
+    position: absolute;
+    height: 100%;
+    width: 15%;
+    background-color: var(--color_main);
+    opacity: 0;
+    border-radius: 8px;
+    transition: opacity 0.2s;
+    display: flex;
+    align-items: center;
+    color: var(--color_accent);
+    font-size: 50px;
+    font-weight: 900;
+    user-select: none;
+}
+
+.description__control span {
+    text-align: center;
+}
+
+.description__control:hover {
+    opacity: .7;
+    cursor: pointer;
+}
+
+.description__control:active {
+    opacity: .8;
+}
+
+.description__control span {
+    width: 100%;
+}
