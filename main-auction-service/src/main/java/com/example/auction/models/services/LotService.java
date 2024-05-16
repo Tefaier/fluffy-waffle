@@ -23,6 +23,7 @@ import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.UUID;
 
@@ -43,6 +44,11 @@ public class LotService {
         this.betService = betService;
         this.outbox = outbox;
         this.outboxService = outboxService;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public List<Lot> getAllLots() {
+        return lotRepository.findAll();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

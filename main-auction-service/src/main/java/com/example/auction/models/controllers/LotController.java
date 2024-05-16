@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/lot")
 @PreAuthorize("isAuthenticated()")
@@ -33,6 +35,11 @@ public class LotController {
             request.description(),
             request.images()
     );
+  }
+
+  @GetMapping
+  public List<Lot> getAllLots() {
+    return lotService.getAllLots();
   }
 
   @GetMapping("/{id}")
