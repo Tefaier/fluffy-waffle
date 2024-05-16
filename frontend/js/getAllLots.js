@@ -6,8 +6,9 @@ function getAllLots() {
         .then(data => {
             const cardsContainer = document.querySelector('.cards');
             data.forEach(lot => {
-                const card = document.createElement('div');
+                const card = document.createElement('a');
                 card.className = 'card';
+                card.href = `lot.html${lot.id}`;
 
                 card.innerHTML = `
                     <div class="card__gallery">
@@ -22,11 +23,10 @@ function getAllLots() {
                     <p class="card__status card__status_last">${lot.status}</p>
                 `;
 
-                document.body.appendChild(card);
+                cardsContainer.appendChild(card);
             });
         })
         .catch(error => console.error('Error while fetching data about lots:', error));
-    console.log("hehe");
 }
 
 function getCurrentPrice(bets) {
