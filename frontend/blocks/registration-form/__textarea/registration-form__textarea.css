@@ -1,0 +1,5 @@
+.registration-form__textarea {
+    resize: vertical;
+    min-height: 49px;
+    height: 49px;
+}
