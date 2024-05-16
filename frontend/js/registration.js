@@ -1,6 +1,6 @@
 const url = 'http://localhost:8080/api';
 
-function registration() {
+async function registration() {
     let inputFirstName;
     let inputLastName;
     let inputLogin;
@@ -32,17 +32,16 @@ function registration() {
         'email': inputEmail,
         });
 
-        fetch(url + "/user", {
+        const response = await fetch(url + "/user", {
             method: 'POST',
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json;charset=UTF-8'
             },
             body: body,
-        })
-            .then(response => response.json())
-            .catch(error => console.error(error));
-        alert(`${inputFirstName}, вы успешно зарегистрировались`)
+        });
+        const parsedUUID = await response.json();
+
+        alert(`${inputFirstName}, вы успешно зарегистрировались`);
 
 
     // Добавить проверку на совпадения пароля
