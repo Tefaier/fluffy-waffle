@@ -1,0 +1,1 @@
+ALTER TABLE lot ADD name TEXT NOT NULL;
