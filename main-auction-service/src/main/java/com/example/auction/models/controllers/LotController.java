@@ -1,19 +1,24 @@
 package com.example.auction.models.controllers;
 
 import com.example.auction.models.DTOs.LotCreateRequest;
+import com.example.auction.models.DTOs.LotDto;
 import com.example.auction.models.entities.Lot;
 import com.example.auction.models.entities.Money;
+import com.example.auction.models.entities.User;
 import com.example.auction.models.services.LotService;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/lot")
-@PreAuthorize("isAuthenticated()")
+//@PreAuthorize("isAuthenticated()")
 public class LotController {
   private final LotService lotService;
 
@@ -39,12 +44,14 @@ public class LotController {
   }
 
   @GetMapping
-  public List<Lot> getAllLots() {
-    return lotService.getAllLots();
+  public List<LotDto> getAllLots() {
+    List<Lot> lots = lotService.getAllLots();
+    return lots.stream().map(Lot::toLotDto).collect(Collectors.toList());
   }
 
   @GetMapping("/{id}")
-  public Lot getLotById(@NotNull @PathVariable("id") Long lotId) {
-    return lotService.getLot(lotId);
+  public LotDto getLotById(@NotNull @PathVariable("id") Long lotId) {
+    Lot lot = lotService.getLot(lotId);
+    return lot.toLotDto();
   }
 }

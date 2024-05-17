@@ -2,6 +2,7 @@ package com.example.auction.models.controllers;
 
 import com.example.auction.models.DTOs.UserRegistryRequest;
 import com.example.auction.models.entities.Lot;
+import com.example.auction.models.entities.User;
 import com.example.auction.models.security.AccessHandler;
 import com.example.auction.models.services.UserService;
 import jakarta.validation.constraints.NotNull;
@@ -45,6 +46,12 @@ public class UserController {
   @PreAuthorize("@accessHandler.checkInfoAccess(authentication, #userId)")
   public Map<UserService.LotUserStatus, List<Lot>> getLotsByUser(@NotNull @PathVariable("id") UUID userId){
     return userService.getRelatedLots(userId);
+  }
+
+  @GetMapping("/name/{id}")
+  public String getUserNameById(@NotNull @PathVariable("id") UUID userId) {
+    User user = userService.getUser(userId);
+    return user.getFirstName() + " " + user.getLastName();
   }
 
   @GetMapping("/userid")
