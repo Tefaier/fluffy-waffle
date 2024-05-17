@@ -2,6 +2,7 @@ package com.example.auction.models.controllers;
 
 import com.example.auction.models.entities.User;
 import com.example.auction.models.security.AccessHandler;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,11 +29,13 @@ public class FrontEndController {
   }
 
   @GetMapping("/account")
+  @PreAuthorize("isAuthenticated()")
   String account() {
     return "account";
   }
 
   @GetMapping("/data")
+  @PreAuthorize("isAuthenticated()")
   String data() {
     return "data";
   }
@@ -43,6 +46,7 @@ public class FrontEndController {
   }
 
   @GetMapping("/new-lot")
+  @PreAuthorize("isAuthenticated()")
   String newLot() {
     return "new-lot";
   }
@@ -53,6 +57,7 @@ public class FrontEndController {
   }
 
   @GetMapping("/personal-lots")
+  @PreAuthorize("isAuthenticated()")
   String personalLots() {
     return "personal-lots";
   }

@@ -1,5 +1,6 @@
 const url = 'http://localhost:8080/api';
 
+
 async function createLot() {
 
 //    event.preventDefault();
@@ -33,6 +34,9 @@ async function createLot() {
         let [integerPart, decimalPart] = inputInitialPrice.split('.');
         initialPriceInteger = parseInt(integerPart);
         initialPriceDecimal = parseInt(decimalPart);
+        if (isNaN(initialPriceDecimal)) {
+            initialPriceDecimal = 0;
+        }
 
         //получаем минимальную для увеличения
         inputIncrease = document.querySelector("#increasePrice").value;
@@ -40,6 +44,9 @@ async function createLot() {
         let [integerIncreasePart, decimalIncreasePart] = inputIncrease.split('.');
         initialIncreasePriceInteger = parseInt(integerIncreasePart);
         initialIncreasePriceDecimal = parseInt(decimalIncreasePart);
+        if (isNaN(initialIncreasePriceDecimal)) {
+            initialIncreasePriceDecimal = 0;
+        }
 
         //получаем начало и конец
         inputStartDate = document.querySelector("#start-date").value;
@@ -55,8 +62,9 @@ async function createLot() {
     }
 
     //Собираем json
+    let userId = await getUserId();
     const body = JSON.stringify({
-        "userId": "81031bdf-499e-485c-bf87-6dee14f061ef",
+        "userId": userId,
         "initialPrice": {
             "integerPart": initialPriceInteger,
             "decimalPart": initialPriceDecimal,
@@ -77,6 +85,8 @@ async function createLot() {
         ]
     });
 
+    console.log(body);
+
     const response = await fetch(url + "/lot", {
                 method: 'POST',
                 headers: {
@@ -85,5 +95,5 @@ async function createLot() {
                 body: body,
             });
 
-    console.log(body);
+    // console.log(body);
 }

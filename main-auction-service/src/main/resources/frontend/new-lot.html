@@ -6,7 +6,7 @@
     <title>Add new lot</title>
     <link rel="stylesheet" href="/pages/new-lot.css">
     <script src="/js/createLot.js"></script>
-
+    <script src="/js/getUserId.js"></script>
 </head>
 <body class="body">
 <div class="page">
@@ -68,9 +68,9 @@
                         <input type="radio" name="currency" value="USD">
                     </label> USD (Доллар США)
                 </div>
-                <button type="button" class="registration-form__button registration-form__button_secondary">Cancel
-                </button>
-                <button type="submit" class="registration-form__button" onclick="createLot()">Save</button>
+                <a href="/account" type="button" class="registration-form__button registration-form__button_secondary">Cancel
+                </a>
+                <button type="button" class="registration-form__button" onclick="createLot()">Save</button>
             </form>
         </section>
     </main>
