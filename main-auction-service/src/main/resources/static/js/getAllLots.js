@@ -9,7 +9,7 @@ function getAllLots() {
             for (const lot of data) {
                 const card = document.createElement('a');
                 card.className = 'card';
-                card.href = `/lot${lot.id}`;
+                card.href = `/lot?id=${lot.id}`;
 
                 let username = await getUserName(lot);
 
