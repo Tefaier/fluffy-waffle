@@ -1,4 +1,4 @@
-const url = "/api";
+const urlMakeBet = "/api";
 
 async function makeBet() {
 
@@ -11,7 +11,7 @@ async function makeBet() {
 
     try {
             //получаем цену
-            inputPrice = document.querySelector("#price").value;
+            inputPrice = document.querySelector("#bet-value").value;
 
             let [integerPart, decimalPart] = inputPrice.split('.');
             PriceInteger = parseInt(integerPart);
@@ -34,19 +34,19 @@ async function makeBet() {
             console.error(error);
             return;
         }
-
+        let userId = await getUserId();
         //Собираем json
         const body = JSON.stringify({
-                "userId": "81031bdf-499e-485c-bf87-6dee14f061ef",
+                "userId": "65cb9107-2f43-4f4f-b878-d6d1d15b181c",
                 "lotId": 1,
                 "value": {
-                    "integerPart": priceInteger,
-                    "decimalPart": priceDecimal,
+                    "integerPart": 1000,
+                    "decimalPart": 0,
                     "currency": selectedCurrency
                 }
             });
 
-        const response = await fetch(url + "/bet", {
+        const response = await fetch(urlMakeBet + "/bet/make", {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json;charset=UTF-8'
