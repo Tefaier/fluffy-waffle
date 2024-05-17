@@ -57,6 +57,11 @@ public class FrontEndController {
     return "personal-lots";
   }
 
+  @GetMapping("/balance")
+  String balance() {
+    return "balance";
+  }
+
   private void setUserId(Authentication authentication, Model model) {
     if (authentication != null) {
       User user = accessHandler.getRelatedUser(authentication);

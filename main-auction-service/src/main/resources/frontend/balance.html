@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add new lot</title>
+    <link rel="stylesheet" href="/pages/new-lot.css">
+    <script src="/js/refillBalance.js"></script>
+
+</head>
+<body class="body">
+<div class="page">
+    <header class="header">
+        <img class="header__logo"
+             src="https://static.mts.ru/mts_rf/images/category/f/i/promo-apps/logo_mts_services_70x70.svg" alt="Logo"/>
+        <h1 class="header__title">Balance deposit</h1>
+        <a href="/account" class="header__button"><span>Account</span></a>
+    </header>
+    <main class="main">
+        <section class="form">
+            <form id="register-form" class="registration-form registration-form_large" method="post">
+
+                <div class="registration-form__field">
+                    <label for="initialPrice" class="registration-form__label">Enter the deposit amount:</label>
+                    <input class="registration-form__input" type="text" id="initialPrice" name="initialPrice" placeholder="Enter a number separated by a dot, for example: 123.456" required>
+                </div>
+
+                <div class="registration-form__field">
+                    <label>
+                        <input type="radio" name="currency" value="RUB">
+                    </label> RUB (Российский рубль)
+                    <label>
+                        <input type="radio" name="currency" value="EUR">
+                    </label> EUR (Евро)
+                    <label>
+                        <input type="radio" name="currency" value="USD">
+                    </label> USD (Доллар США)
+                </div>
+                <button type="button" class="registration-form__button registration-form__button_secondary">Cancel
+                </button>
+                <button type="submit" class="registration-form__button" onclick="createLot()">Save</button>
+            </form>
+        </section>
+    </main>
+</div>
+</body>
+</html>
