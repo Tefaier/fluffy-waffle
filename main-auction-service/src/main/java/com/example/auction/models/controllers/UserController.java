@@ -2,10 +2,12 @@ package com.example.auction.models.controllers;
 
 import com.example.auction.models.DTOs.UserRegistryRequest;
 import com.example.auction.models.entities.Lot;
+import com.example.auction.models.security.AccessHandler;
 import com.example.auction.models.services.UserService;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,11 +20,13 @@ import java.util.UUID;
 public class UserController {
   private final UserService userService;
   private final PasswordEncoder passwordEncoder;
+  private final AccessHandler accessHandler;
 
   @Autowired
-  public UserController(UserService userService, PasswordEncoder passwordEncoder) {
+  public UserController(UserService userService, PasswordEncoder passwordEncoder, AccessHandler accessHandler) {
     this.userService = userService;
     this.passwordEncoder = passwordEncoder;
+    this.accessHandler = accessHandler;
   }
 
   @PostMapping
@@ -41,5 +45,14 @@ public class UserController {
   @PreAuthorize("@accessHandler.checkInfoAccess(authentication, #userId)")
   public Map<UserService.LotUserStatus, List<Lot>> getLotsByUser(@NotNull @PathVariable("id") UUID userId){
     return userService.getRelatedLots(userId);
+  }
+
+  @GetMapping("/userid")
+  @PreAuthorize("isAuthenticated()")
+  public UUID getUserId(Authentication authentication) {
+    if (authentication == null) {
+      return null;
+    }
+    return accessHandler.getRelatedUser(authentication).getId();
   }
 }

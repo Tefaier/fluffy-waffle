@@ -9,7 +9,7 @@ function getAllLots() {
             data.forEach(lot => {
                 const card = document.createElement('a');
                 card.className = 'card';
-                card.href = `lot.html${lot.id}`;
+                card.href = `/lot${lot.id}`;
 
                 card.innerHTML = `
                     <div class="card__gallery">

@@ -16,7 +16,7 @@ public class AccessHandler {
   @Autowired
   private UserService userService;
 
-  private User getRelatedUser(Authentication authentication) {
+  public User getRelatedUser(Authentication authentication) {
     String username = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
         .map(Authentication::getPrincipal)
         .map(user -> (UserDetails) user)
