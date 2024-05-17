@@ -1,4 +1,4 @@
-const url = 'http://localhost:8080/api';
+const url = '/api';
 
 function getAllLots() {
     fetch(url + '/lot',  { method: 'GET'
