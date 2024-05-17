@@ -57,10 +57,10 @@ public class LotService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public long createLot(UUID userId, Money initialPrice, Money minimumIncrease, Timestamp startTime, Timestamp finishTime, String description, String[] images) {
+    public long createLot(UUID userId, Money initialPrice, Money minimumIncrease, Timestamp startTime, Timestamp finishTime, String name, String description, String[] images) {
         User user = userService.getUser(userId);
         images = Arrays.stream(images).filter(this::validateImage).toArray(String[]::new);
-        Lot lot = new Lot(user, initialPrice, minimumIncrease, startTime, finishTime, description, images);
+        Lot lot = new Lot(user, initialPrice, minimumIncrease, startTime, finishTime, name, description, images);
         if (validateLot(lot)) {
             user.addLot(lot);
             lotRepository.save(lot);

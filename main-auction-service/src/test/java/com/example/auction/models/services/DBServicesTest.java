@@ -75,6 +75,7 @@ class DBServicesTest extends DBSuite {
         new Money(10L, 0L, Currency.RUB),
         Timestamp.from(Instant.now().plus(Duration.ofDays(2))),
         Timestamp.from(Instant.now().plus(Duration.ofDays(20))),
+        "LOT",
         "Super thing",
         List.of(
             "https://i.pinimg.com/564x/dc/04/f7/dc04f738148df66a6b8faed5d0789f50.jpg",
@@ -98,8 +99,8 @@ class DBServicesTest extends DBSuite {
     });
     var userUUID2 = userService.createUser("2", "2", "2", "2", "myemail2@company.com");
     var userUUID3 = userService.createUser("3", "3", "3", "3", "myemail3@company.com");
-    var lotId1 = lotService.createLot(userUUID1, start, add, beginNeg, end, "Some lot", new String[0]);
-    var lotId2 = lotService.createLot(userUUID1, start, add, beginPos, end, "Other lot", new String[0]);
+    var lotId1 = lotService.createLot(userUUID1, start, add, beginNeg, end, "some", "Some lot", new String[0]);
+    var lotId2 = lotService.createLot(userUUID1, start, add, beginPos, end, "other","Other lot", new String[0]);
     // lot time exception
     assertThrows(InvalidBetException.class, () -> {
       betService.makeBet(userUUID2, lotId2, new Money(50L, 0L, Currency.RUB));

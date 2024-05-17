@@ -56,7 +56,7 @@ async function createLot() {
 
     //Собираем json
     const body = JSON.stringify({
-        "userId": "f554ee9f-1c6d-4d83-a87d-d45f2100e12d",
+        "userId": "8f6a6ef3-0d0c-4eea-8f83-65b083975f23",
         "initialPrice": {
             "integerPart": initialPriceInteger,
             "decimalPart": initialPriceDecimal,
@@ -69,6 +69,7 @@ async function createLot() {
         },
         "startTime": inputStartDate,
         "finishTime": inputFinishDate,
+        "name" : inputName,
         "description": inputDescription,
         "images": [
             inputURL,

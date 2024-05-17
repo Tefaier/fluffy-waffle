@@ -32,6 +32,7 @@ public class LotController {
             new Money(minimumIncrease.integerPart(), minimumIncrease.decimalPart(), minimumIncrease.currency()),
             request.startTime(),
             request.finishTime(),
+            request.name(),
             request.description(),
             request.images()
     );

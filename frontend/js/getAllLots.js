@@ -1,7 +1,8 @@
 const url = 'http://localhost:8080/api';
 
 function getAllLots() {
-    fetch(url + '/lot')
+    fetch(url + '/lot',  { method: 'GET'
+    })
         .then(response => response.json())
         .then(data => {
             const cardsContainer = document.querySelector('.cards');

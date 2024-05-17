@@ -51,6 +51,9 @@ public class Lot {
   private Timestamp finishTime;
 
   @Column
+  private String name;
+
+  @Column
   private String description;
 
   @Column(columnDefinition = "text[]")
@@ -68,25 +71,27 @@ public class Lot {
   protected Lot() {
   }
 
-  public Lot(Long id, User user, Money initialPrice, Money minimumIncrease, Timestamp startTime, Timestamp finishTime, String description, @NotNull String[] images, LotState lotState, List<Bet> lotBets) {
+  public Lot(Long id, User user, Money initialPrice, Money minimumIncrease, Timestamp startTime, Timestamp finishTime,String name,  String description, @NotNull String[] images, LotState lotState, List<Bet> lotBets) {
     this.id = id;
     this.user = user;
     this.initialPrice = initialPrice;
     this.minimumIncrease = minimumIncrease;
     this.startTime = startTime;
     this.finishTime = finishTime;
+    this.name = name;
     this.description = description;
     this.images = images;
     this.lotState = lotState;
     this.lotBets = lotBets;
   }
 
-  public Lot(User user, Money initialPrice, Money minimumIncrease, Timestamp startTime, Timestamp finishTime, String description, @NotNull String[] images) {
+  public Lot(User user, Money initialPrice, Money minimumIncrease, Timestamp startTime, Timestamp finishTime, String name,  String description, @NotNull String[] images) {
     this.user = user;
     this.initialPrice = initialPrice;
     this.minimumIncrease = minimumIncrease;
     this.startTime = startTime;
     this.finishTime = finishTime;
+    this.name = name;
     this.description = description;
     this.images = images;
     this.lotState = LotState.NOT_SOLD;
@@ -173,6 +178,14 @@ public class Lot {
   }
   public void addLotBet(Bet bet) {
     lotBets.add(bet);
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
   @Override
