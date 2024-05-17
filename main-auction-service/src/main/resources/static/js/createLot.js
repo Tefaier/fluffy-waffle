@@ -1,4 +1,4 @@
-const url = '/api';
+const url = 'http://localhost:8080/api';
 
 async function createLot() {
 
@@ -56,7 +56,7 @@ async function createLot() {
 
     //Собираем json
     const body = JSON.stringify({
-        "userId": "8f6a6ef3-0d0c-4eea-8f83-65b083975f23",
+        "userId": "81031bdf-499e-485c-bf87-6dee14f061ef",
         "initialPrice": {
             "integerPart": initialPriceInteger,
             "decimalPart": initialPriceDecimal,
