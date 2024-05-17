@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/lot")
-@PreAuthorize("isAuthenticated()")
+//@PreAuthorize("isAuthenticated()")
 public class LotController {
   private final LotService lotService;
 
@@ -32,6 +32,7 @@ public class LotController {
             new Money(minimumIncrease.integerPart(), minimumIncrease.decimalPart(), minimumIncrease.currency()),
             request.startTime(),
             request.finishTime(),
+            request.name(),
             request.description(),
             request.images()
     );

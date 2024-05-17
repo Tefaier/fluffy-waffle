@@ -109,7 +109,7 @@ class LotBuyKafkaTest extends DBSuite {
     Timestamp end = Timestamp.from(Instant.now().minus(Duration.ofDays(1)));
 
     User user = userService.getUser(owner);
-    Lot lot = new Lot(user, start, add, begin, end, "Some lot", new String[0]);
+    Lot lot = new Lot(user, start, add, begin, end,"LOT", "Some lot", new String[0]);
     lotRepository.save(lot);
 
     if (buyer != null) {

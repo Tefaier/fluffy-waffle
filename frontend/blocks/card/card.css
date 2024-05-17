@@ -6,6 +6,8 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s;
     width: 400px;
+    text-decoration: none;
+    color: var(--color_text-main);
 }
 
 .card:hover {

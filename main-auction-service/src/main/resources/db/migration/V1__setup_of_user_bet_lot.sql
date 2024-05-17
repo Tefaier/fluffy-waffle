@@ -15,6 +15,7 @@ CREATE TABLE lot (
    lot_dealer UUID NOT NULL,
    start_time TIMESTAMP WITH TIME ZONE NOT NULL,
    finish_time TIMESTAMP WITH TIME ZONE NOT NULL,
+   name TEXT NOT NULL,
    description TEXT NOT NULL,
    images TEXT[] NOT NULL,
    state TEXT NOT NULL,
