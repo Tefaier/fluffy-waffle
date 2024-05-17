@@ -1,4 +1,4 @@
-const url = '/api';
+const url = 'http://localhost:8080/api';
 const urlParams = new URLSearchParams(window.location.search);
 const lotId = urlParams.get('id');
 

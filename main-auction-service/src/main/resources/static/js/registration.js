@@ -1,6 +1,9 @@
-const url = '/api';
+const url = 'http://localhost:8080/api';
 
 async function registration() {
+
+    event.preventDefault();
+
     let inputFirstName;
     let inputLastName;
     let inputLogin;
