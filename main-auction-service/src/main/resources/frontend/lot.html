@@ -34,15 +34,32 @@
                     <label for="bet-value" class="registration-form__label">New bet:</label>
                     <input class="registration-form__input" type="text" id="bet-value" name="bet-value" required>
                 </div>
-                <button type="submit" class="registration-form__button" onclick="makeBet()">Make bet</button>
+                <div class="registration-form__field registration-form__field_radio registration-form__field_radio-small">
+                    <div>
+                        <input class="registration-form__radio" type="radio" name="currency" value="RUB" id="rub">
+                        <label class="registration-form__radio__mock" for="rub"></label>
+                        <p class="registration-form__label_inline">RUB (Российский рубль)</p>
+                    </div>
+                    <div>
+                        <input class="registration-form__radio" type="radio" name="currency" value="EUR" id="eur">
+                        <label class="registration-form__radio__mock" for="eur"></label>
+                        <p class="registration-form__label_inline">EUR (Евро)</p>
+                    </div>
+                    <div>
+                        <input class="registration-form__radio" type="radio" name="currency" value="USD" id="usd">
+                        <label class="registration-form__radio__mock" for="usd"></label>
+                        <p class="registration-form__label_inline">USD (Доллар США)</p>
+                    </div>
+                </div>
+                <button type="button" class="registration-form__button" id="make-bet" onclick="makeBet()">Make bet</button>
             </form>
         </section>
     </main>
 </div>
+<script src="/js/makeBet.js"></script>
 <script src="/js/currency.js"></script>
 <script src="/js/lot.js"></script>
 <script src="/js/getUserId.js"></script>
-<script src="/js/makeBet.js"></script>
 
 </body>
 </html>

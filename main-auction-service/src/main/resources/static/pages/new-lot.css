@@ -22,3 +22,8 @@
 @import "../blocks/registration-form/__button/_secondary/registration-form__button_secondary.css";
 @import "../blocks/registration-form/__input/registration-form__input.css";
 @import "../blocks/registration-form/__textarea/registration-form__textarea.css";
+
+@import "../blocks/registration-form/__radio/registration-form__radio.css";
+@import "../blocks/registration-form/__radio/__mock/registration-form__radio__mock.css";
+@import "../blocks/registration-form/__field/_radio/registration-form__field_radio.css";
+@import "../blocks/registration-form/__label/_inline/registration-form__label_inline.css";
