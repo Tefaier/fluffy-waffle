@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modify personal info</title>
+    <link rel="stylesheet" href="/pages/data.css">
+</head>
+<body class="body">
+    <div class="page">
+        <header class="header">
+            <img class="header__logo" src="https://static.mts.ru/mts_rf/images/category/f/i/promo-apps/logo_mts_services_70x70.svg" alt="Logo" />
+            <h1 class="header__title">Modify personal info</h1>
+            <a href="/account" class="header__button"><span>Account</span></a>
+        </header>
+        <main class="main">
+            <section class="form">
+                <form id="register-form" class="registration-form" method="post">
+                    <div class="registration-form__field">
+                        <label for="first-name" class="registration-form__label">First Name:</label>
+                        <input class="registration-form__input" type="text" id="first-name" name="first_name" value="Roman" required>
+                    </div>
+                
+                    <div class="registration-form__field">
+                        <label for="last-name" class="registration-form__label">Last Name:</label>
+                        <input class="registration-form__input" type="text" id="last-name" name="last_name" value="Petropavlov" required>
+                    </div>
+                
+                    <div class="registration-form__field">
+                        <label for="email" class="registration-form__label">Email:</label>
+                        <input class="registration-form__input" type="email" id="email" name="email" value="roma24.petropavlov@gmail.com" required>
+                    </div>
+                
+                    <div class="registration-form__field">
+                        <label for="username" class="registration-form__label">Login:</label>
+                        <input class="registration-form__input" type="text" id="username" name="username" value="BMSTU732" required>
+                    </div>
+                
+                    <div class="registration-form__field">
+                        <label for="password" class="registration-form__label">Password:</label>
+                        <input class="registration-form__input" type="password" id="password" name="password" value="Bomonka" required>
+                    </div>
+
+                    <div class="registration-form__field">
+                        <input class="registration-form__checkbox" type="checkbox" id="show-password" name="show-password">
+                        <label class="registration-form__checkbox__mock" for="show-password"></label>
+                        <p class="registration-form__label_inline">Show password</p>
+                    </div>
+
+                    <button type="button" onclick="window.history.back(); return false;" class="registration-form__button registration-form__button_secondary">Cancel</button>
+                    <button type="submit" class="registration-form__button">Save</button>
+                </form>
+            </section>
+        </main>
+      </div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+@import "../vendor/normalize.css";
+@import "../vendor/variables.css";
+
+@import "../blocks/body/body.css";
+
+@import "../blocks/page/page.css";
+@import "../blocks/main/main.css";
+
+@import "../blocks/header/header.css";
+@import "../blocks/header/__title/header__title.css";
+@import "../blocks/header/__logo/header__logo.css";
+@import "../blocks/header/__button/header__button.css";
+
+
+@import "../blocks/form/form.css";
+
+@import "../blocks/registration-form/registration-form.css";
+@import "../blocks/registration-form/_large/registration-form_large.css";
+@import "../blocks/registration-form/__field/registration-form__field.css";
+@import "../blocks/registration-form/__label/registration-form__label.css";
+@import "../blocks/registration-form/__button/registration-form__button.css";
+@import "../blocks/registration-form/__button/_secondary/registration-form__button_secondary.css";
+@import "../blocks/registration-form/__input/registration-form__input.css";
+@import "../blocks/registration-form/__textarea/registration-form__textarea.css";
+
+@import "../blocks/registration-form/__radio/registration-form__radio.css";
+@import "../blocks/registration-form/__radio/__mock/registration-form__radio__mock.css";
+@import "../blocks/registration-form/__field/_radio/registration-form__field_radio.css";
+@import "../blocks/registration-form/__label/_inline/registration-form__label_inline.css";
+@import "../blocks/registration-form/__field/_radio/_small/registration-form__field_radio-small.css";

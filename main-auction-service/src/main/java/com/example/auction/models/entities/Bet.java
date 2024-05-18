@@ -1,5 +1,7 @@
 package com.example.auction.models.entities;
 
+import com.example.auction.models.DTOs.BetDto;
+import com.example.auction.models.DTOs.DTOMoney;
 import jakarta.persistence.*;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -70,6 +72,10 @@ public class Bet {
 
   public void setValue(Money value) {
     this.value = value;
+  }
+
+  public BetDto toBetDto() {
+    return new BetDto(id, user.getId(), lot.getId(), new DTOMoney(value.getIntegerPart(), value.getDecimalPart(), value.getCurrency()));
   }
 
   @Override

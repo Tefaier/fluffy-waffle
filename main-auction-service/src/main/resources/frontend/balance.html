@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add new lot</title>
+    <link rel="stylesheet" href="/pages/balance.css">
+    <script src="/js/refillBalance.js"></script>
+    <script src="/js/getUserId.js"></script>
+
+</head>
+<body class="body">
+<div class="page">
+    <header class="header">
+        <img class="header__logo"
+             src="https://static.mts.ru/mts_rf/images/category/f/i/promo-apps/logo_mts_services_70x70.svg" alt="Logo"/>
+        <h1 class="header__title">Balance deposit</h1>
+        <a href="/account" class="header__button"><span>Account</span></a>
+    </header>
+    <main class="main">
+        <section class="form">
+            <form id="register-form" class="registration-form" method="post">
+
+                <div class="registration-form__field">
+                    <label for="initialPrice" class="registration-form__label">Enter the deposit amount:</label>
+                    <input class="registration-form__input" type="text" id="initialPrice" name="initialPrice"
+                           placeholder="Enter a number separated by a dot, for example: 123.456" required>
+                </div>
+
+                <div class="registration-form__field registration-form__field_radio registration-form__field_radio-small">
+                    <div>
+                        <input class="registration-form__radio" type="radio" name="currency" value="RUB" id="rub">
+                        <label class="registration-form__radio__mock" for="rub"></label>
+                        <p class="registration-form__label_inline">RUB</p>
+                    </div>
+                    <div>
+                        <input class="registration-form__radio" type="radio" name="currency" value="EUR" id="eur">
+                        <label class="registration-form__radio__mock" for="eur"></label>
+                        <p class="registration-form__label_inline">EUR</p>
+                    </div>
+                    <div>
+                        <input class="registration-form__radio" type="radio" name="currency" value="USD" id="usd">
+                        <label class="registration-form__radio__mock" for="usd"></label>
+                        <p class="registration-form__label_inline">USD</p>
+                    </div>
+                </div>
+                <button onclick="window.history.back(); return false;" type="button" class="registration-form__button registration-form__button_secondary">Cancel</button>
+                <button type="button" class="registration-form__button" id="save-button">Save</button>
+
+                <script>
+                    const button = document.getElementById('save-button');
+                    button.addEventListener('click', refill);
+                </script>
+            </form>
+        </section>
+    </main>
+</div>
+</body>
+</html>

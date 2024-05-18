@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add new lot</title>
+    <link rel="stylesheet" href="/pages/new-lot.css">
+    <script src="/js/createLot.js"></script>
+    <script src="/js/getUserId.js"></script>
+</head>
+<body class="body">
+<div class="page">
+    <header class="header">
+        <img class="header__logo"
+             src="https://static.mts.ru/mts_rf/images/category/f/i/promo-apps/logo_mts_services_70x70.svg" alt="Logo"/>
+        <h1 class="header__title">Add new lot</h1>
+        <a href="/account" class="header__button"><span>Account</span></a>
+    </header>
+    <main class="main">
+        <section class="form">
+            <form id="register-form" class="registration-form registration-form_large" method="post">
+                <div class="registration-form__field">
+                    <label for="name" class="registration-form__label">Name:</label>
+                    <input class="registration-form__input" type="text" id="name" name="=name" required>
+                </div>
+
+                <div class="registration-form__field">
+                    <label for="description" class="registration-form__label">Description:</label>
+                    <textarea class="registration-form__input registration-form__textarea" id="description"
+                              name="description" required></textarea>
+                </div>
+
+                <div class="registration-form__field">
+                    <label for="images" class="registration-form__label">Image URLs:</label>
+                    <textarea class="registration-form__input registration-form__textarea" id="images"
+                              name="images"></textarea>
+                </div>
+
+                <div class="registration-form__field">
+                    <label for="initialPrice" class="registration-form__label">Initial price:</label>
+                    <input class="registration-form__input" type="text" id="initialPrice" name="initialPrice"
+                           placeholder="Enter a number separated by a dot, for example: 123.456" required>
+                </div>
+
+                <div class="registration-form__field">
+                    <label for="increasePrice" class="registration-form__label">Minimal increase price:</label>
+                    <input class="registration-form__input" type="text" id="increasePrice" name="increasePrice"
+                           placeholder="Enter a number separated by a dot, for example: 123.456" required>
+                </div>
+
+                <div class="registration-form__field">
+                    <label for="start-date" class="registration-form__label">Start date:</label>
+                    <input class="registration-form__input" type="datetime-local" id="start-date" name="start-date"
+                           required>
+                </div>
+
+                <div class="registration-form__field">
+                    <label for="end-date" class="registration-form__label">End date:</label>
+                    <input class="registration-form__input" type="datetime-local" id="end-date" name="end-date"
+                           required>
+                </div>
+                <div class="registration-form__field registration-form__field_radio">
+                    <div>
+                        <input class="registration-form__radio" type="radio" name="currency" value="RUB" id="rub">
+                        <label class="registration-form__radio__mock" for="rub"></label>
+                        <p class="registration-form__label_inline">RUB</p>
+                    </div>
+                    <div>
+                        <input class="registration-form__radio" type="radio" name="currency" value="EUR" id="eur">
+                        <label class="registration-form__radio__mock" for="eur"></label>
+                        <p class="registration-form__label_inline">EUR</p>
+                    </div>
+                    <div>
+                        <input class="registration-form__radio" type="radio" name="currency" value="USD" id="usd">
+                        <label class="registration-form__radio__mock" for="usd"></label>
+                        <p class="registration-form__label_inline">USD</p>
+                    </div>
+                </div>
+                <a href="/account" type="button" onclick="window.history.back(); return false;" class="registration-form__button registration-form__button_secondary">Cancel
+                </a>
+                <button type="button" class="registration-form__button" onclick="createLot()">Save</button>
+            </form>
+        </section>
+    </main>
+</div>
+</body>
+</html>

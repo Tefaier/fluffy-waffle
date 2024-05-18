@@ -1,5 +1,7 @@
 package com.example.auction.models.entities;
 
+import com.example.auction.models.DTOs.DTOMoney;
+import com.example.auction.models.DTOs.LotDto;
 import com.example.auction.models.enums.LotState;
 import io.hypersistence.utils.hibernate.type.array.StringArrayType;
 import jakarta.persistence.*;
@@ -7,11 +9,14 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.Type;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static jakarta.persistence.CascadeType.PERSIST;
 import static org.hibernate.annotations.FetchMode.SUBSELECT;
@@ -64,7 +69,7 @@ public class Lot {
   @Enumerated(EnumType.STRING)
   private LotState lotState;
 
-  @OneToMany(mappedBy = "lot", orphanRemoval = true, fetch = FetchType.LAZY, cascade = {PERSIST})
+  @OneToMany(mappedBy = "lot", orphanRemoval = true, fetch = FetchType.EAGER, cascade = {PERSIST})
   @Fetch(SUBSELECT)
   private List<Bet> lotBets = new ArrayList<>();
 
@@ -186,6 +191,22 @@ public class Lot {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public LotDto toLotDto() {
+    return new LotDto(
+            id,
+            user.getId(),
+            new DTOMoney(initialPrice.getIntegerPart(), initialPrice.getDecimalPart(), initialPrice.getCurrency()),
+            new DTOMoney(minimumIncrease.getIntegerPart(), minimumIncrease.getDecimalPart(), minimumIncrease.getCurrency()),
+            startTime,
+            finishTime,
+            name,
+            description,
+            images,
+            lotState,
+            lotBets.stream().map(Bet::toBetDto).collect(Collectors.toList())
+    );
   }
 
   @Override

@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Log In</title>
+        <link rel="stylesheet" href="/pages/login.css">
+    </head>
+    <body class="body">
+        <div class="page">
+            <header class="header">
+                <img class="header__logo" src="https://static.mts.ru/mts_rf/images/category/f/i/promo-apps/logo_mts_services_70x70.svg" alt="Logo"/>
+                <h1 class="header__title">Log In</h1>
+                <a href="/account" class="header__button"><span>Account</span></a>
+            </header>
+            <main class="main">
+                <section class="form">
+<!--                    <div th:if="${param.error}">Invalid username and password.</div>-->
+<!--                    <div th:if="${param.logout}">You have been logged out.</div>-->
+                    <form class="registration-form" th:action="@{/login/perform_login}" method="post">
+                        <div class="registration-form__field">
+                            <label for="login" class="registration-form__label">Login:</label>
+                            <input class="registration-form__input" id="login" type="text" name="username"/>
+                        </div>
+                        <div class="registration-form__field">
+                            <label for="password" class="registration-form__label">Password:</label>
+                            <input class="registration-form__input" id="password" type="password" name="password"/>
+                        </div>
+                        <input class="registration-form__button" type="submit" value="Log in" />
+                    </form>
+                </section>
+            </main>
+        </div>
+    </body>
+</html>
