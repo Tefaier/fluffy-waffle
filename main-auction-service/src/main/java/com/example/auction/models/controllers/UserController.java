@@ -1,5 +1,7 @@
 package com.example.auction.models.controllers;
 
+import com.example.auction.models.DTOs.LotDto;
+import com.example.auction.models.DTOs.UserDto;
 import com.example.auction.models.DTOs.UserRegistryRequest;
 import com.example.auction.models.entities.Lot;
 import com.example.auction.models.entities.User;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
@@ -42,16 +45,29 @@ public class UserController {
     userService.deleteUser(userId);
   }
 
+  @GetMapping("/{id}/lots")
+  @PreAuthorize("@accessHandler.checkInfoAccess(authentication, #userId)")
+  public Map<UserService.LotUserStatus, List<LotDto>> getLotsByUser(@NotNull @PathVariable("id") UUID userId){
+    Map<UserService.LotUserStatus, List<Lot>> lots = userService.getRelatedLots(userId);
+    return lots.entrySet().stream()
+            .collect(Collectors.toMap(
+                    Map.Entry::getKey,
+                    entry -> entry.getValue().stream()
+                            .map(Lot::toLotDto)
+                            .collect(Collectors.toList())
+            ));
+  }
+
   @GetMapping("/{id}")
   @PreAuthorize("@accessHandler.checkInfoAccess(authentication, #userId)")
-  public Map<UserService.LotUserStatus, List<Lot>> getLotsByUser(@NotNull @PathVariable("id") UUID userId){
-    return userService.getRelatedLots(userId);
+  public UserDto getUser(@NotNull @PathVariable("id") UUID userId) {
+    return userService.getUser(userId).toUserDto();
   }
 
   @GetMapping("/name/{id}")
   public String getUserNameById(@NotNull @PathVariable("id") UUID userId) {
     User user = userService.getUser(userId);
-    return user.getFirstName() + " " + user.getLastName();
+    return user.getLogin();
   }
 
   @GetMapping("/userid")

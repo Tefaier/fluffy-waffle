@@ -1,5 +1,6 @@
 package com.example.auction.models.entities;
 
+import com.example.auction.models.DTOs.UserDto;
 import com.example.auction.models.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -9,6 +10,7 @@ import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.type.SqlTypes;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static jakarta.persistence.CascadeType.PERSIST;
 import static org.hibernate.annotations.FetchMode.SUBSELECT;
@@ -45,7 +47,7 @@ public class User {
   @NotEmpty
   private String email;
 
-  @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY, cascade = {PERSIST})
+  @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER, cascade = {PERSIST})
   @Fetch(SUBSELECT)
   private List<Lot> lots = new ArrayList<>();
 
@@ -156,6 +158,17 @@ public class User {
 
   public void setRoles(Set<Role> roles) {
     this.roles = roles;
+  }
+
+  public UserDto toUserDto() {
+    return new UserDto(
+            id,
+            login,
+            firstName,
+            lastName,
+            email,
+            lots.stream().map(Lot::toLotDto).collect(Collectors.toList())
+    );
   }
 
   @Override

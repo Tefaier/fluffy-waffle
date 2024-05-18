@@ -31,3 +31,6 @@
 @import "../blocks/registration-form/__label/registration-form__label.css";
 @import "../blocks/registration-form/__button/registration-form__button.css";
 @import "../blocks/registration-form/__input/registration-form__input.css";
+
+@import "../blocks/menu/menu.css";
+@import "../blocks/menu/__option/menu__option.css";
