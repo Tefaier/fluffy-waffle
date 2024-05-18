@@ -1,0 +1,13 @@
+.registration-form__radio {
+  visibility: hidden;
+  position: absolute;
+  user-select: none;
+}
+
+.registration-form__radio:checked + .registration-form__radio__mock {
+  background-color: var(--color_accent);
+}
+
+.registration-form__radio:checked + .registration-form__radio__mock::after {
+  display: block;
+}

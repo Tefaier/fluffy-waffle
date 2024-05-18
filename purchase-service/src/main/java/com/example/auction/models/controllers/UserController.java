@@ -18,6 +18,7 @@ public class UserController {
   }
 
   @PutMapping
+  @CrossOrigin(origins = "http://localhost:8080")
   public void addMoney(@RequestBody AddMoneyRequest request) {
     var value = request.value();
     User user = userService.getUser(request.userId());

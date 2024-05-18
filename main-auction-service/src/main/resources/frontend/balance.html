@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add new lot</title>
-    <link rel="stylesheet" href="/pages/new-lot.css">
+    <link rel="stylesheet" href="/pages/balance.css">
     <script src="/js/refillBalance.js"></script>
+    <script src="/js/getUserId.js"></script>
 
 </head>
 <body class="body">
@@ -18,27 +19,39 @@
     </header>
     <main class="main">
         <section class="form">
-            <form id="register-form" class="registration-form registration-form_large" method="post">
+            <form id="register-form" class="registration-form" method="post">
 
                 <div class="registration-form__field">
                     <label for="initialPrice" class="registration-form__label">Enter the deposit amount:</label>
-                    <input class="registration-form__input" type="text" id="initialPrice" name="initialPrice" placeholder="Enter a number separated by a dot, for example: 123.456" required>
+                    <input class="registration-form__input" type="text" id="initialPrice" name="initialPrice"
+                           placeholder="Enter a number separated by a dot, for example: 123.456" required>
                 </div>
 
-                <div class="registration-form__field">
-                    <label>
-                        <input type="radio" name="currency" value="RUB">
-                    </label> RUB (Российский рубль)
-                    <label>
-                        <input type="radio" name="currency" value="EUR">
-                    </label> EUR (Евро)
-                    <label>
-                        <input type="radio" name="currency" value="USD">
-                    </label> USD (Доллар США)
+                <div class="registration-form__field registration-form__field_radio registration-form__field_radio-small">
+                    <div>
+                        <input class="registration-form__radio" type="radio" name="currency" value="RUB" id="rub">
+                        <label class="registration-form__radio__mock" for="rub"></label>
+                        <p class="registration-form__label_inline">RUB (Российский рубль)</p>
+                    </div>
+                    <div>
+                        <input class="registration-form__radio" type="radio" name="currency" value="EUR" id="eur">
+                        <label class="registration-form__radio__mock" for="eur"></label>
+                        <p class="registration-form__label_inline">EUR (Евро)</p>
+                    </div>
+                    <div>
+                        <input class="registration-form__radio" type="radio" name="currency" value="USD" id="usd">
+                        <label class="registration-form__radio__mock" for="usd"></label>
+                        <p class="registration-form__label_inline">USD (Доллар США)</p>
+                    </div>
                 </div>
                 <button type="button" class="registration-form__button registration-form__button_secondary">Cancel
                 </button>
-                <button type="submit" class="registration-form__button" onclick="createLot()">Save</button>
+                <button type="button" class="registration-form__button" id="save-button">Save</button>
+
+                <script>
+                    const button = document.getElementById('save-button');
+                    button.addEventListener('click', refill);
+                </script>
             </form>
         </section>
     </main>
