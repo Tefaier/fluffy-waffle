@@ -13,6 +13,9 @@
         <a href="/account" class="header__button"><span>Account</span></a>
     </header>
     <main class="main">
+        <section class="menu">
+            <a href="/" class="menu__option">Main</a>
+        </section>
         <section class="description">
             <div class="description__gallery">
                 <div class="description__control description__control_position_left"><span>◄</span></div>
@@ -25,7 +28,7 @@
             </div>
         </section>
         <section class="purchase">
-            <h3 class="purchase__price">Current Price is <span class="purchase__price-value">$100M</span><span class="purchase__reload">⟳</span></h3>
+            <h3 class="purchase__price">Current Price is <span class="purchase__price-value">$100M</span><span class="purchase__reload" onclick="updatePrice()">⟳</span></h3>
             <form id="register-form" class="registration-form" method="post">
                 <div class="registration-form__field">
                     <label for="bet-value" class="registration-form__label">New bet:</label>
@@ -36,6 +39,7 @@
         </section>
     </main>
 </div>
+<script src="/js/currency.js"></script>
 <script src="/js/lot.js"></script>
 <script src="/js/getUserId.js"></script>
 <script src="/js/makeBet.js"></script>

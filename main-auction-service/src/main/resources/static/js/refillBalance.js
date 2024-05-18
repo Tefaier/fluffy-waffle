@@ -42,7 +42,7 @@ async function createLot() {
     //Собираем json
     let userId = await getUserId();
     const body = JSON.stringify({
-        "userId": 65cb9107-2f43-4f4f-b878-d6d1d15b181c,
+        "userId": userId,
         "value": {
             "integerPart": initialPriceInteger,
             "decimalPart": initialPriceDecimal,
