@@ -13,8 +13,13 @@ async function getAllLotsForUser() {
             const cardsContainer = document.querySelector('.cards');
             // later I could try not to hardcode it
             for (const lot of awaitingPayment) {
+                cardsInfo[lot.id] = {
+                    currentIndex: 0,
+                    imageUrls: lot.images
+                };
                 const card = document.createElement('a');
                 card.href=`/lot?id=${lot.id}`;
+                card.id = lot.id;
                 card.innerHTML = `
                     <div class="card__gallery">
                         <div class="card__control card__control_position_left">◄</div>
@@ -27,10 +32,27 @@ async function getAllLotsForUser() {
                     <p class="card__time">${formatDate(lot.finishTime)}</p>
                     <p class="card__status card__status_payment">Awaiting payment</p>
                 `;
+
+                const leftControl = card.querySelector('.card__control_position_left');
+                const rightControl = card.querySelector('.card__control_position_right');
+                leftControl.addEventListener('click', () => {
+                    updatedImage(lot.id, -1);
+                });
+                rightControl.addEventListener('click', () => {
+                    updatedImage(lot.id, +1);
+                });
+
                 cardsContainer.appendChild(card);
             }
             for (const lot of lose) {
+                cardsInfo[lot.id] = {
+                    currentIndex: 0,
+                    imageUrls: lot.images
+                };
                 const card = document.createElement('a');
+                card.className = 'card';
+                card.href = `/lot?id=${lot.id}`;
+                card.id = lot.id;
                 card.innerHTML = `
                     <div class="card__gallery">
                         <div class="card__control card__control_position_left">◄</div>
@@ -43,10 +65,27 @@ async function getAllLotsForUser() {
                     <p class="card__time">${formatDate(lot.finishTime)}</p>
                     <p class="card__status card__status_beaten">Beaten</p>
                 `;
+
+                const leftControl = card.querySelector('.card__control_position_left');
+                const rightControl = card.querySelector('.card__control_position_right');
+                leftControl.addEventListener('click', () => {
+                    updatedImage(lot.id, -1);
+                });
+                rightControl.addEventListener('click', () => {
+                    updatedImage(lot.id, +1);
+                });
+
                 cardsContainer.appendChild(card);
             }
             for (const lot of win) {
+                cardsInfo[lot.id] = {
+                    currentIndex: 0,
+                    imageUrls: lot.images
+                };
                 const card = document.createElement('a');
+                card.className = 'card';
+                card.href = `/lot?id=${lot.id}`;
+                card.id = lot.id;
                 card.innerHTML = `
                     <div class="card__gallery">
                         <div class="card__control card__control_position_left">◄</div>
@@ -59,6 +98,16 @@ async function getAllLotsForUser() {
                     <p class="card__time">${formatDate(lot.finishTime)}</p>
                     <p class="card__status card__status_last">You are the last</p>
                 `;
+
+                const leftControl = card.querySelector('.card__control_position_left');
+                const rightControl = card.querySelector('.card__control_position_right');
+                leftControl.addEventListener('click', () => {
+                    updatedImage(lot.id, -1);
+                });
+                rightControl.addEventListener('click', () => {
+                    updatedImage(lot.id, +1);
+                });
+
                 cardsContainer.appendChild(card);
             }
         })
