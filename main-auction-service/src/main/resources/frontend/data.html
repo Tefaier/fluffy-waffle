@@ -42,7 +42,7 @@
                     </div>
 
                     <div class="registration-form__field">
-                        <input class="registration-form__checkbox" type="checkbox" id="show-password" name="show-password">
+                        <input class="registration-form__checkbox" type="checkbox" id="show-password" name="show-password" onchange="togglePasswordVisibility()">
                         <label class="registration-form__checkbox__mock" for="show-password"></label>
                         <p class="registration-form__label_inline">Show password</p>
                     </div>
@@ -53,5 +53,7 @@
             </section>
         </main>
       </div>
+    <script src="/js/getUserId.js"></script>
+    <script src="/js/loadUserData.js"></script>
 </body>
 </html>
