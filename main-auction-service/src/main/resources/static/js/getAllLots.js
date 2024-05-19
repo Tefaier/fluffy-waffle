@@ -10,6 +10,11 @@ function getAllLots() {
                 const card = document.createElement('a');
                 card.className = 'card';
                 card.href = `/lot?id=${lot.id}`;
+                card.id = lot.id;
+                cardsInfo[lot.id] = {
+                    currentIndex: 0,
+                    imageUrls: lot.images
+                };
 
                 let username = await getUserName(lot);
 
@@ -25,40 +30,19 @@ function getAllLots() {
                     <p class="card__time">${formatDate(lot.finishTime)}</p>
                 `;
 
+                const leftControl = card.querySelector('.card__control_position_left');
+                const rightControl = card.querySelector('.card__control_position_right');
+                leftControl.addEventListener('click', () => {
+                    updatedImage(lot.id, -1);
+                });
+                rightControl.addEventListener('click', () => {
+                    updatedImage(lot.id, +1);
+                });
+
                 cardsContainer.appendChild(card);
             }
         })
         .catch(error => console.error('Error while fetching data about lots:', error));
-}
-
-function getCurrentPrice(bets, initialPrice) {
-    if (bets.length === 0) {
-        return moneyValue(initialPrice);
-    }
-    return betValue(bets.reduce((max, currentBet) => {
-        return betValue(currentBet) > betValue(max) ? currentBet : max;
-    }, bets[0]));
-}
-
-function betValue(bet) {
-    return moneyValue(bet.value);
-}
-
-function moneyValue(money) {
-    return money.integerPart + money.decimalPart / Math.pow(10, money.decimalPart.toString().length);
-}
-
-function getCurrency(money) {
-    switch (money.currency) {
-        case "USD":
-            return "$";
-        case "RUB":
-            return "₽";
-        case "EUR":
-            return "€";
-        default:
-            return "";
-    }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -66,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function getUserName(lot) {
-    userId = lot.userId
+    let userId = lot.userId
     return fetch(`http://localhost:8080/api/user/name/${userId}`, { method: 'GET'})
         .then(response => response.text())
         .then(data=> {

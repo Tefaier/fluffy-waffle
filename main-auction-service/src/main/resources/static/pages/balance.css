@@ -11,29 +11,17 @@
 @import "../blocks/header/__logo/header__logo.css";
 @import "../blocks/header/__button/header__button.css";
 
-@import "../blocks/description/description.css";
-@import "../blocks/description/__gallery/description__gallery.css";
-@import "../blocks/description/__image/description__image.css";
-@import "../blocks/description/__control/description__control.css";
-@import "../blocks/description/__control/_position/description__control_position_left.css";
-@import "../blocks/description/__control/_position/description__control_position_right.css";
-@import "../blocks/description/__content/description__content.css";
-@import "../blocks/description/__title/description__title.css";
-@import "../blocks/description/__text/description__text.css";
 
-@import "../blocks/purchase/purchase.css";
-@import "../blocks/purchase/__price/purchase__price.css";
-@import "../blocks/purchase/__price-value/purchase__price-value.css";
-@import "../blocks/purchase/__reload/purchase__reload.css";
+@import "../blocks/form/form.css";
 
 @import "../blocks/registration-form/registration-form.css";
+@import "../blocks/registration-form/_large/registration-form_large.css";
 @import "../blocks/registration-form/__field/registration-form__field.css";
 @import "../blocks/registration-form/__label/registration-form__label.css";
 @import "../blocks/registration-form/__button/registration-form__button.css";
+@import "../blocks/registration-form/__button/_secondary/registration-form__button_secondary.css";
 @import "../blocks/registration-form/__input/registration-form__input.css";
-
-@import "../blocks/menu/menu.css";
-@import "../blocks/menu/__option/menu__option.css";
+@import "../blocks/registration-form/__textarea/registration-form__textarea.css";
 
 @import "../blocks/registration-form/__radio/registration-form__radio.css";
 @import "../blocks/registration-form/__radio/__mock/registration-form__radio__mock.css";

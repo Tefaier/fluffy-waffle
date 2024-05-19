@@ -42,16 +42,18 @@
                     </div>
 
                     <div class="registration-form__field">
-                        <input class="registration-form__checkbox" type="checkbox" id="show-password" name="show-password">
+                        <input class="registration-form__checkbox" type="checkbox" id="show-password" name="show-password" onchange="togglePasswordVisibility()">
                         <label class="registration-form__checkbox__mock" for="show-password"></label>
                         <p class="registration-form__label_inline">Show password</p>
                     </div>
 
-                    <button type="button" class= "registration-form__button registration-form__button_secondary">Cancel</button>
+                    <button type="button" onclick="window.history.back(); return false;" class="registration-form__button registration-form__button_secondary">Cancel</button>
                     <button type="submit" class="registration-form__button">Save</button>
                 </form>
             </section>
         </main>
       </div>
+    <script src="/js/getUserId.js"></script>
+    <script src="/js/loadUserData.js"></script>
 </body>
 </html>

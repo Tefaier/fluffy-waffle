@@ -26,6 +26,13 @@
                             <input class="registration-form__input" id="password" type="password" name="password"/>
                         </div>
                         <input class="registration-form__button" type="submit" value="Log in" />
+                        <input class="registration-form__button" type="button" value="Registry" id="register-button" />
+                        <script>
+                            var registerButton = document.getElementById('register-button');
+                            function redirectToRegisterPage() {
+                                window.location.href = '/register';
+                            }
+                            registerButton.addEventListener('click', redirectToRegisterPage);</script>
                     </form>
                 </section>
             </main>

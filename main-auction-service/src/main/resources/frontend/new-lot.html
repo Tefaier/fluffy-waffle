@@ -38,12 +38,14 @@
 
                 <div class="registration-form__field">
                     <label for="initialPrice" class="registration-form__label">Initial price:</label>
-                    <input class="registration-form__input" type="text" id="initialPrice" name="initialPrice" placeholder="Enter a number separated by a dot, for example: 123.456" required>
+                    <input class="registration-form__input" type="text" id="initialPrice" name="initialPrice"
+                           placeholder="Enter a number separated by a dot, for example: 123.456" required>
                 </div>
 
                 <div class="registration-form__field">
                     <label for="increasePrice" class="registration-form__label">Minimal increase price:</label>
-                    <input class="registration-form__input" type="text" id="increasePrice" name="increasePrice" placeholder="Enter a number separated by a dot, for example: 123.456" required>
+                    <input class="registration-form__input" type="text" id="increasePrice" name="increasePrice"
+                           placeholder="Enter a number separated by a dot, for example: 123.456" required>
                 </div>
 
                 <div class="registration-form__field">
@@ -57,18 +59,24 @@
                     <input class="registration-form__input" type="datetime-local" id="end-date" name="end-date"
                            required>
                 </div>
-                <div class="registration-form__field">
-                    <label>
-                        <input type="radio" name="currency" value="RUB">
-                    </label> RUB (Российский рубль)
-                    <label>
-                        <input type="radio" name="currency" value="EUR">
-                    </label> EUR (Евро)
-                    <label>
-                        <input type="radio" name="currency" value="USD">
-                    </label> USD (Доллар США)
+                <div class="registration-form__field registration-form__field_radio">
+                    <div>
+                        <input class="registration-form__radio" type="radio" name="currency" value="RUB" id="rub">
+                        <label class="registration-form__radio__mock" for="rub"></label>
+                        <p class="registration-form__label_inline">RUB</p>
+                    </div>
+                    <div>
+                        <input class="registration-form__radio" type="radio" name="currency" value="EUR" id="eur">
+                        <label class="registration-form__radio__mock" for="eur"></label>
+                        <p class="registration-form__label_inline">EUR</p>
+                    </div>
+                    <div>
+                        <input class="registration-form__radio" type="radio" name="currency" value="USD" id="usd">
+                        <label class="registration-form__radio__mock" for="usd"></label>
+                        <p class="registration-form__label_inline">USD</p>
+                    </div>
                 </div>
-                <a href="/account" type="button" class="registration-form__button registration-form__button_secondary">Cancel
+                <a href="/account" type="button" onclick="window.history.back(); return false;" class="registration-form__button registration-form__button_secondary">Cancel
                 </a>
                 <button type="button" class="registration-form__button" onclick="createLot()">Save</button>
             </form>

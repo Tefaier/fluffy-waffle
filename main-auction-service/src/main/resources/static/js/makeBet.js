@@ -16,6 +16,10 @@ async function makeBet() {
             let [integerPart, decimalPart] = inputPrice.split('.');
             PriceInteger = parseInt(integerPart);
             PriceDecimal = parseInt(decimalPart);
+
+            if (isNaN(PriceDecimal)) {
+                        PriceDecimal = 0;
+                    }
 //            //получаем минимальную для увеличения
 //            inputIncrease = document.querySelector("#increasePrice").value;
 //
@@ -34,14 +38,18 @@ async function makeBet() {
             console.error(error);
             return;
         }
+
+        var currentUrl = window.location.href;
+        var lotId = await getLotIdFromUrl(currentUrl);
+
         let userId = await getUserId();
         //Собираем json
         const body = JSON.stringify({
-                "userId": "65cb9107-2f43-4f4f-b878-d6d1d15b181c",
-                "lotId": 1,
+                "userId": userId,
+                "lotId": lotId,
                 "value": {
-                    "integerPart": 1000,
-                    "decimalPart": 0,
+                    "integerPart": PriceInteger,
+                    "decimalPart": PriceDecimal,
                     "currency": selectedCurrency
                 }
             });
@@ -55,4 +63,13 @@ async function makeBet() {
                     });
 
         console.log(body);
+}
+
+function getLotIdFromUrl(url) {
+    // Получаем параметры URL-адреса
+    var params = new URLSearchParams(url.split('?')[1]);
+    // Получаем значение параметра 'id'
+    var lotId = params.get('id');
+    console.log(lotId)
+    return lotId;
 }

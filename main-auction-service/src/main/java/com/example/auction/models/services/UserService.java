@@ -126,7 +126,7 @@ public class UserService implements UserDetailsService {
         result.put(LotUserStatus.ownsSold, userLots.stream().filter(lot -> lot.getLotState().equals(LotState.SOLD)).toList());
         result.put(LotUserStatus.ownsUnsold, userLots.stream().filter(lot -> lot.getLotState().equals(LotState.UNSOLD)).toList());
 
-        result.put(LotUserStatus.participates, userBettedLots.stream().filter(lot -> lot.getFinishTime().before(currentTime)).toList());
+        result.put(LotUserStatus.participates, userBettedLots.stream().filter(lot -> lot.getFinishTime().after(currentTime)).toList());
         result.put(LotUserStatus.participatesLoses, result.get(LotUserStatus.participates).stream().filter(lot -> !userBettedLotsTopIsUser.get(lot)).toList());
         result.put(LotUserStatus.participatesWins, result.get(LotUserStatus.participates).stream().filter(lot -> userBettedLotsTopIsUser.get(lot)).toList());
 
