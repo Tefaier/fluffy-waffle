@@ -99,6 +99,6 @@ async function createLot() {
                 },
                 body: body,
             });
-
+    alert("You've created a new lot");
     // console.log(body);
 }

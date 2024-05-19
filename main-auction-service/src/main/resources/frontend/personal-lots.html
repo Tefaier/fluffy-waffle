@@ -17,7 +17,13 @@
                 <a href="/" class="menu__option">Main</a>
                 <a href="/data" class="menu__option">Manage personal data</a>
                 <a href="/account" class="menu__option">My account</a>
-                <div class="menu__option menu__option_right">Log out</div>
+                <button class="menu__option menu__option_right" type="button" value="Log out" id="log-out-button">Log out</button>
+                <script>
+                    var registerButton = document.getElementById('log-out-button');
+                    function redirectToRegisterPage() {
+                        window.location.href = '/logout';
+                    }
+                    registerButton.addEventListener('click', redirectToRegisterPage);</script>
             </section>
             <section class="cards">
                 <a href="/new-lot" class="card">
