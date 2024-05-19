@@ -2,9 +2,7 @@ package com.example.auction.models.services;
 
 import com.example.auction.models.entities.Money;
 import com.example.auction.models.entities.User;
-import com.example.auction.models.exceptions.NegativeMoneyException;
 import com.example.auction.models.repositories.UserRepository;
-import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +60,11 @@ public class UserService {
         entityManager.lock(user, LockModeType.PESSIMISTIC_WRITE);
         user.setMoney(user.getMoney().minus(money));
         userRepository.save(user);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Money getBalance(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        return user.getMoney();
     }
 }
