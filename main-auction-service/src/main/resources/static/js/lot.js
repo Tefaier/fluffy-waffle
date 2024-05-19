@@ -22,6 +22,11 @@ function load() {
 
             const currentPrice = document.querySelector('.purchase__price-value');
             currentPrice.innerHTML = getCurrency(data.initialPrice) + getCurrentPrice(data.lotBets, data.initialPrice);
+
+            cardsInfo[lotId] = {
+                currentIndex: 0,
+                imageUrls: data.images
+            };
         })
         .catch(error => console.error('Error while fetching data about lot:', error));
 }
@@ -36,6 +41,18 @@ function updatePrice() {
         .catch(error => console.error('Error while fetching data about lot:', error));
 }
 
+function enableControls() {
+    const leftControl = document.querySelector('.description__control_position_left');
+    const rightControl = document.querySelector('.description__control_position_right');
+    leftControl.addEventListener('click', () => {
+        updatedImage(lotId, -1);
+    });
+    rightControl.addEventListener('click', () => {
+        updatedImage(lotId, +1);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     load();
+    enableControls();
 });

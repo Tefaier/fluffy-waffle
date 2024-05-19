@@ -18,6 +18,7 @@
 @import "../blocks/registration-form/__field/registration-form__field.css";
 @import "../blocks/registration-form/__label/registration-form__label.css";
 @import "../blocks/registration-form/__button/registration-form__button.css";
+@import "../blocks/registration-form/__button/_secondary/registration-form__button_secondary.css";
 @import "../blocks/registration-form/__input/registration-form__input.css";
 
 @import "../blocks/card/card.css";
