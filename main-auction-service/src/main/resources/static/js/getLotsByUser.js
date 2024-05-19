@@ -18,7 +18,9 @@ async function getLotsByUser() {
                     currentIndex: 0,
                     imageUrls: lot.images
                 };
+                let username = await getUserName(lot.userId);
                 const card = document.createElement('a');
+                card.className = 'card';
                 card.href=`/lot?id=${lot.id}`;
                 card.id = lot.id;
                 card.innerHTML = `
@@ -31,7 +33,7 @@ async function getLotsByUser() {
                     <h4 class="card__owner">${username}</h4>
                     <p class="card__price">${getCurrency(lot.initialPrice) + getCurrentPrice(lot.lotBets, lot.initialPrice)}</p>
                     <p class="card__time">${formatDate(lot.finishTime)}</p>
-                    <p class="card__status card__status_payment">Awaiting the start of trading</p>
+                    <p class="card__status card__status_beaten">Awaiting the start of trading</p>
                     `;
 
                     const leftControl = card.querySelector('.card__control_position_left');
@@ -51,7 +53,9 @@ async function getLotsByUser() {
                     currentIndex: 0,
                     imageUrls: lot.images
                 };
+                let username = await getUserName(lot.userId);
                 const card = document.createElement('a');
+                card.className = 'card';
                 card.href=`/lot?id=${lot.id}`;
                 card.id = lot.id;
                 card.innerHTML = `
@@ -64,7 +68,7 @@ async function getLotsByUser() {
                     <h4 class="card__owner">${username}</h4>
                     <p class="card__price">${getCurrency(lot.initialPrice) + getCurrentPrice(lot.lotBets, lot.initialPrice)}</p>
                     <p class="card__time">${formatDate(lot.finishTime)}</p>
-                    <p class="card__status card__status_payment">Bidding process</p>
+                    <p class="card__status card__status_last">Bidding process</p>
                     `;
 
                     const leftControl = card.querySelector('.card__control_position_left');
@@ -78,7 +82,40 @@ async function getLotsByUser() {
 
                     cardsContainer.appendChild(card);
             }
+            for (const lot of ownsAwaitsPayment) {
+                cardsInfo[lot.id] = {
+                    currentIndex: 0,
+                    imageUrls: lot.images
+                };
+                let username = await getUserName(lot.userId);
+                const card = document.createElement('a');
+                card.className = 'card';
+                card.href=`/lot?id=${lot.id}`;
+                card.id = lot.id;
+                card.innerHTML = `
+                    <div class="card__gallery">
+                        <div class="card__control card__control_position_left">◄</div>
+                        <img class="card__image" src="${lot.images[0]}" alt="Picture">
+                        <div class="card__control card__control_position_right">►</div>
+                    </div>
+                    <h3 class="card__name">${lot.name}</h3>
+                    <h4 class="card__owner">${username}</h4>
+                    <p class="card__price">${getCurrency(lot.initialPrice) + getCurrentPrice(lot.lotBets, lot.initialPrice)}</p>
+                    <p class="card__time">${formatDate(lot.finishTime)}</p>
+                    <p class="card__status card__status_payment">Awaits Payment</p>
+                    `;
 
+                    const leftControl = card.querySelector('.card__control_position_left');
+                    const rightControl = card.querySelector('.card__control_position_right');
+                    leftControl.addEventListener('click', () => {
+                        updatedImage(lot.id, -1);
+                    });
+                    rightControl.addEventListener('click', () => {
+                        updatedImage(lot.id, +1);
+                    });
+
+                    cardsContainer.appendChild(card);
+            }
         })
         .catch(error => console.error('Error while fetching data about lots:', error));
 }

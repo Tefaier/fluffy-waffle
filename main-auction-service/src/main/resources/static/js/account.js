@@ -17,8 +17,9 @@ async function getAllLotsForUser() {
                     currentIndex: 0,
                     imageUrls: lot.images
                 };
-                let username = getUserName(lot.userId);
+                let username = await getUserName(lot.userId);
                 const card = document.createElement('a');
+                card.className = 'card';
                 card.href=`/lot?id=${lot.id}`;
                 card.id = lot.id;
                 card.innerHTML = `
@@ -50,7 +51,7 @@ async function getAllLotsForUser() {
                     currentIndex: 0,
                     imageUrls: lot.images
                 };
-                let username = getUserName(lot.userId);
+                let username = await getUserName(lot.userId);
                 const card = document.createElement('a');
                 card.className = 'card';
                 card.href = `/lot?id=${lot.id}`;
@@ -84,7 +85,7 @@ async function getAllLotsForUser() {
                     currentIndex: 0,
                     imageUrls: lot.images
                 };
-                let username = getUserName(lot.userId);
+                let username = await getUserName(lot.userId);
                 const card = document.createElement('a');
                 card.className = 'card';
                 card.href = `/lot?id=${lot.id}`;
