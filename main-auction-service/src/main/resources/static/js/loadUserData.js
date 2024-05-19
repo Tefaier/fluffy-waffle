@@ -17,6 +17,17 @@ async function loadUserData() {
     });
 }
 
+function togglePasswordVisibility() {
+    const passwordInput = document.getElementById("password");
+    const showPasswordCheckbox = document.getElementById("show-password");
+
+    if (showPasswordCheckbox.checked) {
+        passwordInput.type = "text"; // Show password
+    } else {
+        passwordInput.type = "password"; // Hide password
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     loadUserData();
 });
