@@ -46,10 +46,9 @@ public class UserController {
   }
 
   @GetMapping("/{id}/lots")
-//  @PreAuthorize("@accessHandler.checkInfoAccess(authentication, #userId)")
+  @PreAuthorize("@accessHandler.checkInfoAccess(authentication, #userId)")
   public Map<UserService.LotUserStatus, List<LotDto>> getLotsByUser(@NotNull @PathVariable("id") UUID userId){
     Map<UserService.LotUserStatus, List<Lot>> lots = userService.getRelatedLots(userId);
-    System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n" + lots.get(UserService.LotUserStatus.participates) + "\n\n\n\n\n\n\n\n\n\n\n\n");
     return lots.entrySet().stream()
             .collect(Collectors.toMap(
                     Map.Entry::getKey,
