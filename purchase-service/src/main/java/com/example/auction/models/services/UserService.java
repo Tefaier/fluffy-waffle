@@ -52,7 +52,11 @@ public class UserService {
     public void addMoney(Long userId, Money money) {
         User user = userRepository.findById(userId).orElseThrow();
         entityManager.lock(user, LockModeType.PESSIMISTIC_WRITE);
-        user.setMoney(user.getMoney().plus(money));
+        if (user.getMoney().getIntegerPart() == 0 && user.getMoney().getDecimalPart() == 0) {
+            user.setMoney(money);
+        } else {
+            user.setMoney(user.getMoney().plus(money));
+        }
         userRepository.save(user);
     }
 
