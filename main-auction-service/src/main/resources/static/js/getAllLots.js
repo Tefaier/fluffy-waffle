@@ -10,6 +10,11 @@ function getAllLots() {
                 const card = document.createElement('a');
                 card.className = 'card';
                 card.href = `/lot?id=${lot.id}`;
+                card.id = lot.id;
+                cardsInfo[lot.id] = {
+                    currentIndex: 0,
+                    imageUrls: lot.images
+                };
 
                 let username = await getUserName(lot);
 
@@ -24,6 +29,15 @@ function getAllLots() {
                     <p class="card__price">${getCurrency(lot.initialPrice) + getCurrentPrice(lot.lotBets, lot.initialPrice)}</p>
                     <p class="card__time">${formatDate(lot.finishTime)}</p>
                 `;
+
+                const leftControl = card.querySelector('.card__control_position_left');
+                const rightControl = card.querySelector('.card__control_position_right');
+                leftControl.addEventListener('click', () => {
+                    updatedImage(lot.id, -1);
+                });
+                rightControl.addEventListener('click', () => {
+                    updatedImage(lot.id, +1);
+                });
 
                 cardsContainer.appendChild(card);
             }
