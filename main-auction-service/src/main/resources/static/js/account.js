@@ -121,7 +121,16 @@ async function getAllLotsForUser() {
 async function setTitle() {
     let userId = await getUserId();
     const title = document.querySelector('.header__title');
-    title.innerText = await getUserName(userId);
+    const username = await getUserName(userId)
+    const balance = await getCurrentBalance(userId);
+    title.innerText = username + " (" + balance + ")";
+}
+
+function getCurrentBalance(userId) {
+    return fetch('', {method: 'GET'}).then(
+        response => response.json()).then(data => {
+            return getCurrency(data) + moneyValue(data);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
