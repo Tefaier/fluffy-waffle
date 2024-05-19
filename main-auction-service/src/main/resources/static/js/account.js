@@ -127,7 +127,7 @@ async function setTitle() {
 }
 
 function getCurrentBalance(userId) {
-    return fetch('', {method: 'GET'}).then(
+    return fetch('http://localhost:8081/api/user/' + userId, {method: 'GET'}).then(
         response => response.json()).then(data => {
             return getCurrency(data) + moneyValue(data);
     });
