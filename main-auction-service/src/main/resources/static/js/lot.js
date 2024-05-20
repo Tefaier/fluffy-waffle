@@ -20,22 +20,44 @@ function load() {
             const descriptionText = document.querySelector('.description__text');
             descriptionText.innerHTML = data.description;
 
-            const currentPrice = document.querySelector('.purchase__price-value');
-            currentPrice.innerHTML = getCurrency(data.initialPrice) + getCurrentPrice(data.lotBets, data.initialPrice);
+            fetch(url + '/lot/' + lotId + '/top')
+                    .then(response => response.json())
+                    .then(data => {
+                        const currentPrice = document.querySelector('.purchase__price-value');
+                        currentPrice.innerHTML = getCurrency(data) + data.integerPart + "." + data.decimalPart;
+                    })
+                    .catch(error => console.error('Error while fetching data about lot:', error));
+
+            cardsInfo[lotId] = {
+                currentIndex: 0,
+                imageUrls: data.images
+            };
         })
         .catch(error => console.error('Error while fetching data about lot:', error));
 }
 
 function updatePrice() {
-    fetch(url + '/lot/' + lotId)
+    fetch(url + '/lot/' + lotId + '/top')
         .then(response => response.json())
         .then(data => {
             const currentPrice = document.querySelector('.purchase__price-value');
-            currentPrice.innerHTML = getCurrency(data.initialPrice) + getCurrentPrice(data.lotBets, data.initialPrice);
+            currentPrice.innerHTML = getCurrency(data) + data.integerPart + "." + data.decimalPart;
         })
         .catch(error => console.error('Error while fetching data about lot:', error));
 }
 
+function enableControls() {
+    const leftControl = document.querySelector('.description__control_position_left');
+    const rightControl = document.querySelector('.description__control_position_right');
+    leftControl.addEventListener('click', () => {
+        updatedImage(lotId, -1);
+    });
+    rightControl.addEventListener('click', () => {
+        updatedImage(lotId, +1);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     load();
+    enableControls();
 });

@@ -19,7 +19,7 @@ async function registration() {
         inputPassword = document.querySelector("#password").value;
         inputReturnPassword = document.querySelector("#password-confirm").value;
         if (inputPassword !== inputReturnPassword) {
-                    alert("Пароли не совпадают");
+                    alert("Passwords don't match!");
                     return;
                 }
     } catch (error) {
@@ -44,7 +44,7 @@ async function registration() {
         });
         const parsedUUID = await response.json();
 
-        alert(`${inputFirstName}, вы успешно зарегистрировались`);
+        alert(`${inputFirstName}, you've registered`);
 
 
     // Добавить проверку на совпадения пароля

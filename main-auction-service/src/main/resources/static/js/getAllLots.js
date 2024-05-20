@@ -17,7 +17,21 @@ function getAllLots() {
                 };
 
                 let username = await getUserName(lot);
-
+//                let currency;
+//                let integerPart;
+//                let decimalPart;
+//                let value;
+//                fetch(url + '/lot/' + lot.id + '/top')
+//                    .then(response => response.json())
+//                    .then(data => {
+//                    currency = getCurrency(data);
+//                    console.log(data);
+//                    integerPart = data.integerPart;
+//                    decimalPart = data.decimalPart;
+//                    value = currency + integerPart + "." + decimalPart;
+//                    console.log(currency + integerPart + "." + decimalPart);
+//                    })
+//                    .catch(error => console.error('Error while fetching data about lot:', error));
                 card.innerHTML = `
                     <div class="card__gallery">
                         <div class="card__control card__control_position_left">◄</div>
@@ -26,7 +40,7 @@ function getAllLots() {
                     </div>
                     <h3 class="card__name">${lot.name}</h3>
                     <h4 class="card__owner">${username}</h4>
-                    <p class="card__price">${getCurrency(lot.initialPrice) + getCurrentPrice(lot.lotBets, lot.initialPrice)}</p>
+                    <p class="card__price">${await getLotValue(lot.id)}</p>
                     <p class="card__time">${formatDate(lot.finishTime)}</p>
                 `;
 
@@ -64,4 +78,23 @@ function formatDate(dateString) {
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
     return `${day}.${month}.${year}`;
+}
+
+async function getLotValue(lotId) {
+    let currency;
+    let integerPart;
+    let decimalPart;
+    let value;
+
+    const response = await fetch(url + '/lot/' + lotId + '/top');
+    const data = await response.json();
+
+    currency = getCurrency(data);
+    console.log(data);
+    integerPart = data.integerPart;
+    decimalPart = data.decimalPart;
+    value = currency + integerPart + "." + decimalPart;
+    console.log(currency + integerPart + "." + decimalPart);
+
+    return value;
 }

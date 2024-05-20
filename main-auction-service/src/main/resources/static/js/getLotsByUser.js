@@ -1,18 +1,19 @@
 const url = 'http://localhost:8080/api';
 
-async function getAllLotsForUser() {
+async function getLotsByUser() {
     let userId = await getUserId();
+
     fetch(url + '/user/' + userId + "/lots",  { method: 'GET'
-    })
+        })
         .then(response => response.json())
         .then(async data => {
-            let awaitingPayment = data.awaitsPayment;
-            let lose = data.participatesLoses;
-            let win = data.participatesWins;
+            let ownsAwaits = data.ownsAwaits;
+            let ownsInProgress = data.ownsInProgress;
+            let ownsAwaitsPayment = data.ownsAwaitsPayment;
 
             const cardsContainer = document.querySelector('.cards');
-            // later I could try not to hardcode it
-            for (const lot of awaitingPayment) {
+
+            for (const lot of ownsAwaits) {
                 cardsInfo[lot.id] = {
                     currentIndex: 0,
                     imageUrls: lot.images
@@ -32,21 +33,22 @@ async function getAllLotsForUser() {
                     <h4 class="card__owner">${username}</h4>
                     <p class="card__price">${await getLotValue(lot.id)}</p>
                     <p class="card__time">${formatDate(lot.finishTime)}</p>
-                    <p class="card__status card__status_payment">Awaiting payment</p>
-                `;
+                    <p class="card__status card__status_beaten">Awaiting the start of trading</p>
+                    `;
 
-                const leftControl = card.querySelector('.card__control_position_left');
-                const rightControl = card.querySelector('.card__control_position_right');
-                leftControl.addEventListener('click', () => {
-                    updatedImage(lot.id, -1);
-                });
-                rightControl.addEventListener('click', () => {
-                    updatedImage(lot.id, +1);
-                });
+                    const leftControl = card.querySelector('.card__control_position_left');
+                    const rightControl = card.querySelector('.card__control_position_right');
+                    leftControl.addEventListener('click', () => {
+                        updatedImage(lot.id, -1);
+                    });
+                    rightControl.addEventListener('click', () => {
+                        updatedImage(lot.id, +1);
+                    });
 
-                cardsContainer.appendChild(card);
+                    cardsContainer.appendChild(card);
             }
-            for (const lot of lose) {
+
+            for (const lot of ownsInProgress) {
                 cardsInfo[lot.id] = {
                     currentIndex: 0,
                     imageUrls: lot.images
@@ -54,7 +56,7 @@ async function getAllLotsForUser() {
                 let username = await getUserName(lot.userId);
                 const card = document.createElement('a');
                 card.className = 'card';
-                card.href = `/lot?id=${lot.id}`;
+                card.href=`/lot?id=${lot.id}`;
                 card.id = lot.id;
                 card.innerHTML = `
                     <div class="card__gallery">
@@ -66,21 +68,21 @@ async function getAllLotsForUser() {
                     <h4 class="card__owner">${username}</h4>
                     <p class="card__price">${await getLotValue(lot.id)}</p>
                     <p class="card__time">${formatDate(lot.finishTime)}</p>
-                    <p class="card__status card__status_beaten">Beaten</p>
-                `;
+                    <p class="card__status card__status_last">Bidding process</p>
+                    `;
 
-                const leftControl = card.querySelector('.card__control_position_left');
-                const rightControl = card.querySelector('.card__control_position_right');
-                leftControl.addEventListener('click', () => {
-                    updatedImage(lot.id, -1);
-                });
-                rightControl.addEventListener('click', () => {
-                    updatedImage(lot.id, +1);
-                });
+                    const leftControl = card.querySelector('.card__control_position_left');
+                    const rightControl = card.querySelector('.card__control_position_right');
+                    leftControl.addEventListener('click', () => {
+                        updatedImage(lot.id, -1);
+                    });
+                    rightControl.addEventListener('click', () => {
+                        updatedImage(lot.id, +1);
+                    });
 
-                cardsContainer.appendChild(card);
+                    cardsContainer.appendChild(card);
             }
-            for (const lot of win) {
+            for (const lot of ownsAwaitsPayment) {
                 cardsInfo[lot.id] = {
                     currentIndex: 0,
                     imageUrls: lot.images
@@ -88,7 +90,7 @@ async function getAllLotsForUser() {
                 let username = await getUserName(lot.userId);
                 const card = document.createElement('a');
                 card.className = 'card';
-                card.href = `/lot?id=${lot.id}`;
+                card.href=`/lot?id=${lot.id}`;
                 card.id = lot.id;
                 card.innerHTML = `
                     <div class="card__gallery">
@@ -100,19 +102,19 @@ async function getAllLotsForUser() {
                     <h4 class="card__owner">${username}</h4>
                     <p class="card__price">${await getLotValue(lot.id)}</p>
                     <p class="card__time">${formatDate(lot.finishTime)}</p>
-                    <p class="card__status card__status_last">You are the last</p>
-                `;
+                    <p class="card__status card__status_payment">Awaits Payment</p>
+                    `;
 
-                const leftControl = card.querySelector('.card__control_position_left');
-                const rightControl = card.querySelector('.card__control_position_right');
-                leftControl.addEventListener('click', () => {
-                    updatedImage(lot.id, -1);
-                });
-                rightControl.addEventListener('click', () => {
-                    updatedImage(lot.id, +1);
-                });
+                    const leftControl = card.querySelector('.card__control_position_left');
+                    const rightControl = card.querySelector('.card__control_position_right');
+                    leftControl.addEventListener('click', () => {
+                        updatedImage(lot.id, -1);
+                    });
+                    rightControl.addEventListener('click', () => {
+                        updatedImage(lot.id, +1);
+                    });
 
-                cardsContainer.appendChild(card);
+                    cardsContainer.appendChild(card);
             }
         })
         .catch(error => console.error('Error while fetching data about lots:', error));
@@ -121,21 +123,12 @@ async function getAllLotsForUser() {
 async function setTitle() {
     let userId = await getUserId();
     const title = document.querySelector('.header__title');
-    const username = await getUserName(userId)
-    const balance = await getCurrentBalance(userId);
-    title.innerText = username + " (" + balance + ")";
-}
-
-function getCurrentBalance(userId) {
-    return fetch('http://localhost:8081/api/user/' + userId, {method: 'GET'}).then(
-        response => response.json()).then(data => {
-            return getCurrency(data) + moneyValue(data);
-    });
+    title.innerText = await getUserName(userId);
 }
 
 document.addEventListener('DOMContentLoaded', function() {
     setTitle();
-    getAllLotsForUser();
+    getLotsByUser();
 });
 
 function getUserName(userId) {

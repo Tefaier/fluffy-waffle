@@ -18,7 +18,8 @@ async function createLot() {
     let initialPriceDecimal;
     let initialIncreasePriceInteger;
     let initialIncreasePriceDecimal;
-
+    let linksArray;
+    let textarea;
 
     try {
         //имя
@@ -55,6 +56,13 @@ async function createLot() {
         //получаем валюту
         selectedCurrency = document.querySelector('input[name="currency"]:checked').value;
 
+        textarea = document.getElementById('images');
+        linksArray = textarea.value
+          .trim() // Удалить лишние пробелы
+          .split('\n') // Разбить по строкам
+          .filter(link => link !== '');
+
+        console.log(linksArray);
 
     } catch (error) {
         console.error(error);
@@ -79,10 +87,7 @@ async function createLot() {
         "finishTime": inputFinishDate,
         "name" : inputName,
         "description": inputDescription,
-        "images": [
-            inputURL,
-            inputURL
-        ]
+        "images": linksArray
     });
 
     console.log(body);
@@ -94,6 +99,6 @@ async function createLot() {
                 },
                 body: body,
             });
-
+    alert("You've created a new lot");
     // console.log(body);
 }
