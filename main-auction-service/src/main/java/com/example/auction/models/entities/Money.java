@@ -11,8 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.spring6.context.SpringContextUtils;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 @Embeddable
 public class Money implements Comparable<Money> {
+  @Transient
+  private static DecimalFormat df = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+
   @Column
   @PositiveOrZero
   @NotNull
@@ -29,18 +36,20 @@ public class Money implements Comparable<Money> {
   private Currency currency;
 
   protected Money() {
+    df.setMaximumFractionDigits(18);
   }
 
   public Money(Long integerPart, Long decimalPart, Currency currency) {
     this.integerPart = integerPart;
     this.decimalPart = decimalPart;
     this.currency = currency;
+    df.setMaximumFractionDigits(18);
   }
 
   public Money plus(Money money) {
     double value1 = Money.getDoubleValue(this);
     double value2 = Money.getDoubleValue(money.convertToCurrency(currency));
-    var parts = Double.toString(value1 + value2).split("\\.");
+    var parts = df.format(value1 + value2).split("\\.");
     long newIntPart = Long.parseLong(parts[0]);
     long newDecPart = Long.parseLong(new StringBuilder(parts[1]).reverse().toString());
     return new Money(newIntPart, newDecPart, currency);
@@ -53,7 +62,7 @@ public class Money implements Comparable<Money> {
     if (value1 < value2) {
       throw new NegativeMoneyException("Tried to subtract to high value: " + value1 + " - " + value2);
     }
-    var parts = Double.toString(value1 - value2).split("\\.");
+    var parts = df.format(value1 - value2).split("\\.");
     long newIntPart = Long.parseLong(parts[0]);
     long newDecPart = Long.parseLong(new StringBuilder(parts[1]).reverse().toString());
     return new Money(newIntPart, newDecPart, currency);
@@ -87,7 +96,7 @@ public class Money implements Comparable<Money> {
     if (to == currency) return this;
     double value = Money.getDoubleValue(this);
     value *= CurrencyConversionService.getCurrencyRatio(currency, to);
-    var parts = Double.toString(value).split("\\.");
+    var parts = df.format(value).split("\\.");
     long newIntPart = Long.parseLong(parts[0]);
     long newDecPart = Long.parseLong(new StringBuilder(parts[1]).reverse().toString());
     return new Money(newIntPart, newDecPart, to);
