@@ -30,7 +30,7 @@ async function getAllLotsForUser() {
                     </div>
                     <h3 class="card__name">${lot.name}</h3>
                     <h4 class="card__owner">${username}</h4>
-                    <p class="card__price">${getCurrency(lot.initialPrice) + getCurrentPrice(lot.lotBets, lot.initialPrice)}</p>
+                    <p class="card__price">${await getLotValue(lot.id)}</p>
                     <p class="card__time">${formatDate(lot.finishTime)}</p>
                     <p class="card__status card__status_payment">Awaiting payment</p>
                 `;
@@ -64,7 +64,7 @@ async function getAllLotsForUser() {
                     </div>
                     <h3 class="card__name">${lot.name}</h3>
                     <h4 class="card__owner">${username}</h4>
-                    <p class="card__price">${getCurrency(lot.initialPrice) + getCurrentPrice(lot.lotBets, lot.initialPrice)}</p>
+                    <p class="card__price">${await getLotValue(lot.id)}</p>
                     <p class="card__time">${formatDate(lot.finishTime)}</p>
                     <p class="card__status card__status_beaten">Beaten</p>
                 `;
@@ -98,7 +98,7 @@ async function getAllLotsForUser() {
                     </div>
                     <h3 class="card__name">${lot.name}</h3>
                     <h4 class="card__owner">${username}</h4>
-                    <p class="card__price">${getCurrency(lot.initialPrice) + getCurrentPrice(lot.lotBets, lot.initialPrice)}</p>
+                    <p class="card__price">${await getLotValue(lot.id)}</p>
                     <p class="card__time">${formatDate(lot.finishTime)}</p>
                     <p class="card__status card__status_last">You are the last</p>
                 `;
@@ -152,4 +152,23 @@ function formatDate(dateString) {
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
     return `${day}.${month}.${year}`;
+}
+
+async function getLotValue(lotId) {
+    let currency;
+    let integerPart;
+    let decimalPart;
+    let value;
+
+    const response = await fetch(url + '/lot/' + lotId + '/top');
+    const data = await response.json();
+
+    currency = getCurrency(data);
+    console.log(data);
+    integerPart = data.integerPart;
+    decimalPart = data.decimalPart;
+    value = currency + integerPart + "." + decimalPart;
+    console.log(currency + integerPart + "." + decimalPart);
+
+    return value;
 }

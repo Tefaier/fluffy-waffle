@@ -20,8 +20,13 @@ function load() {
             const descriptionText = document.querySelector('.description__text');
             descriptionText.innerHTML = data.description;
 
-            const currentPrice = document.querySelector('.purchase__price-value');
-            currentPrice.innerHTML = getCurrency(data.initialPrice) + getCurrentPrice(data.lotBets, data.initialPrice);
+            fetch(url + '/lot/' + lotId + '/top')
+                    .then(response => response.json())
+                    .then(data => {
+                        const currentPrice = document.querySelector('.purchase__price-value');
+                        currentPrice.innerHTML = getCurrency(data) + data.integerPart + "." + data.decimalPart;
+                    })
+                    .catch(error => console.error('Error while fetching data about lot:', error));
 
             cardsInfo[lotId] = {
                 currentIndex: 0,
