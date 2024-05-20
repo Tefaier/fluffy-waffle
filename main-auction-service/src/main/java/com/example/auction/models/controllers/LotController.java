@@ -59,11 +59,13 @@ public class LotController {
   @GetMapping("/{id}/top")
   @Transactional
   public DTOMoney getTopBet(@NotNull @PathVariable("id") Long lotId) {
-    var bet = betService.getHighestValueBet(lotService.getLot(lotId).getLotBets());
-    return bet == null ? null : new DTOMoney(
-        bet.getValue().getIntegerPart(),
-        bet.getValue().getDecimalPart(),
-        bet.getValue().getCurrency()
+    var lot = lotService.getLot(lotId);
+    var bet = betService.getHighestValueBet(lot.getLotBets());
+    var value = bet == null ? lot.getInitialPrice() : bet.getValue();
+    return new DTOMoney(
+        value.getIntegerPart(),
+        value.getDecimalPart(),
+        value.getCurrency()
     );
   }
 }
