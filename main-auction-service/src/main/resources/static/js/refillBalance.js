@@ -53,5 +53,5 @@ async function refill() {
         },
         body: body,
     });
-    // console.log(body);
+    alert("You've filled your balance");
 }

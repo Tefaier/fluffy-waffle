@@ -10,7 +10,7 @@
     <div class="page">
         <header class="header">
             <img class="header__logo" src="https://static.mts.ru/mts_rf/images/category/f/i/promo-apps/logo_mts_services_70x70.svg" alt="Logo"/>
-            <h1 class="header__title">BMSTU732</h1>
+            <h1 class="header__title">name</h1>
             <a href="/account" class="header__button"><span>Account</span></a>
         </header>
         <main class="main">
@@ -22,7 +22,7 @@
                 <script>
                     var registerButton = document.getElementById('log-out-button');
                     function redirectToRegisterPage() {
-                        window.location.href = '/login';
+                        window.location.href = '/logout';
                     }
                     registerButton.addEventListener('click', redirectToRegisterPage);</script>
                 <a href="/balance" class="menu__option">Top up balance</a>
@@ -35,5 +35,6 @@
     <script src="/js/getUserId.js"></script>
     <script src="/js/gallery.js"></script>
     <script src="/js/account.js"></script>
+    <script src="/js/preventDefault.js"></script>
     </body>
 </html>

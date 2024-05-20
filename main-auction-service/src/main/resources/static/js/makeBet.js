@@ -62,6 +62,7 @@ async function makeBet() {
                         body: body,
                     });
 
+        alert("You've made a bet");
         console.log(body);
 }
 
